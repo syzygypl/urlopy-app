@@ -5,10 +5,14 @@
 Run:
 
 * `yarn`
-* `yarn run start:server` (or `yarn run start:server:watch` to auto-reload)
-* `yarn start` (in another terminal) - this sets up client-side application
 
-## Proxying requests:
+If need be, in separate terminals do (or put in background):
+
+* `yarn run start:server` (or `yarn run start:server:watch` to auto-reload)
+* `yarn start` - this sets up client-side application (default address is http://localhost:3000)
+* `yarn run build:css` (or `yarn run build:css:watch`)
+
+## Proxying requests
 
 https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development
 
