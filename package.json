@@ -1,0 +1,25 @@
+{
+  "name": "urlopy",
+  "version": "1.0.0",
+  "description": "## Set-up",
+  "main": "index.js",
+  "scripts": {
+    "test:server": "./node_modules/mocha/bin/mocha common server",
+    "test:client": "cd client && yarn test",
+    "test": "npm run test:server && echo Press any key to run client tests... && read && npm run test:client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syzygypl/urlopy-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syzygypl/urlopy-app/issues"
+  },
+  "homepage": "https://github.com/syzygypl/urlopy-app#readme",
+  "dependencies": {
+    "mocha": "^3.2.0"
+  }
+}
