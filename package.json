@@ -4,6 +4,7 @@
   "description": "## Set-up",
   "main": "index.js",
   "scripts": {
+    "install": "cd client && yarn && cd .. && cd server && yarn",
     "start:client": "cd client && yarn && yarn start",
     "start:server": "cd server && yarn && yarn start",
     "start:server:watch": "cd server && yarn && yarn start:watch",
