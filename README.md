@@ -23,3 +23,7 @@ https://github.com/facebookincubator/create-react-app/blob/master/packages/react
 ## Server/client code sharing
 
 Look for `common` folder under root directory
+
+## Testing
+
+Look for scripts in package.json under root directory - do ```yarn test``` to run all tests 
