@@ -4,6 +4,8 @@
   "description": "## Set-up",
   "main": "index.js",
   "scripts": {
+    "start:client": "cd client && yarn && yarn start",
+    "start:server": "cd server && yarn && yarn start",
     "test:server": "./node_modules/mocha/bin/mocha common server",
     "test:client": "cd client && yarn test",
     "test": "npm run test:server && echo Press any key to run client tests... && read && npm run test:client"
