@@ -1,3 +1,8 @@
+const compose = (...args) => initialValue => args.reduceRight(
+  (result, fn) => fn(result),
+  initialValue
+);
+
 module.exports = {
-  // add server/client shared code here
+  compose
 };
