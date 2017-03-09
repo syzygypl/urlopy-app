@@ -9,7 +9,7 @@
     "start:server:watch": "cd server && yarn && yarn start:watch",
     "test:server": "./node_modules/mocha/bin/mocha common server",
     "test:client": "cd client && yarn test",
-    "test": "yarn run test:server && echo Press any key to run client tests... && read && yarn run test:client"
+    "test": "yarn run test:server && echo Press Enter to run client tests... && read && yarn run test:client"
   },
   "repository": {
     "type": "git",
