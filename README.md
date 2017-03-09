@@ -11,7 +11,8 @@ If need be, in separate terminals do (or put in background):
 * `yarn run start:server` (or `yarn run start:server:watch` to auto-reload)
 * `yarn start` - this sets up client-side application (default address is http://localhost:3000)
 * `yarn run build:css` (or `yarn run build:css:watch`)
-
+    > Create-react-app supports autoprefixer out of the box. There is no need to add it to postCSS plugins list.
+    
 ## Proxying requests
 
 https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development
