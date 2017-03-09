@@ -2,19 +2,11 @@
 
 ## Set-up
 
-### Server
+Run:
 
-* cd into server/, then run: 
-    * ```yarn```
-    * ```yarn start```
-    
-Server is available at http://localhost:4000.
-
-### Client
-
-* cd into client/, then run: 
-    * ```yarn```
-    * ```yarn start```
+* `yarn`
+* `yarn run start:server` (or `yarn run start:server:watch` to auto-reload)
+* `yarn start` (in another terminal) - this sets up client-side application
 
 ## Proxying requests:
 
@@ -24,6 +16,13 @@ https://github.com/facebookincubator/create-react-app/blob/master/packages/react
 
 Look for `common` folder under root directory
 
+## Structure
+
+* public - create-react-app development bundle
+* common - client/server shared code
+* src - client sources
+* srcServer - server sources
+
 ## Testing
 
-Look for scripts in package.json under root directory - do ```yarn test``` to run all tests 
+Run `yarn test`
