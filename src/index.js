@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import store from './store';
 
@@ -17,11 +17,11 @@ ReactDOM.render(
           <li><Link to="/topics">Topics</Link></li>
         </ul>
 
-        <hr/>
+        <hr />
 
-        <Route exact path="/" component={() => (<div>Home</div>)}/>
-        <Route path="/about" component={() => (<div>About</div>)}/>
-        <Route path="/topics" component={() => (<div>Topics</div>)}/>
+        <Route exact path="/" component={() => (<div>Home</div>)} />
+        <Route path="/about" component={() => (<div>About</div>)} />
+        <Route path="/topics" component={() => (<div>Topics</div>)} />
       </div>
     </Router>
   </Provider>,

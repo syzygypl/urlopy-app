@@ -1,4 +1,6 @@
+const scss = require('postcss-scss');
+
 module.exports = {
-  syntax: require('postcss-scss'),
+  syntax: scss,
   plugins: []
 };
