@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { compose } = require('../common');
+const { compose } = require('redux');
 
 module.exports = compose(
   port => port[0],
@@ -9,5 +9,5 @@ module.exports = compose(
   parsed => parsed.proxy,
   JSON.parse,
   file => file.toString(),
-  fs.readFileSync
+  fs.readFileSync,
 );
