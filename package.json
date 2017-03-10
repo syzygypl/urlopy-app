@@ -30,8 +30,8 @@
   "scripts": {
     "build:css": "postcss src/*.scss src/**/*.scss -r -x css",
     "build:css:watch": "yarn run build:css -- -w",
-    "start:server:watch": "nodemon index.js",
-    "start:server": "node index.js",
+    "start:server:watch": "nodemon --harmony_trailing_commas index.js",
+    "start:server": "node --harmony_trailing_commas index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
