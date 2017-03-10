@@ -10,8 +10,8 @@
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
     "react-router-dom": "next",
-    "redux": "^3.6.0",
     "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.0",
     "redux-thunk": "^2.2.0"
   },
@@ -26,7 +26,8 @@
     "postcss-scss": "^0.4.1",
     "precss": "^1.4.0",
     "react-scripts": "0.9.4",
-    "stylelint": "^7.9.0"
+    "stylelint": "^7.9.0",
+    "stylelint-config-standard": "^16.0.0"
   },
   "proxy": "http://localhost:4000",
   "scripts": {

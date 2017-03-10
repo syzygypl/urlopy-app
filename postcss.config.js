@@ -4,5 +4,5 @@ const preCSS = require('precss');
 
 module.exports = {
   syntax: scss,
-  plugins: [preCSS, stylelint({ "rules": {} })]
+  plugins: [preCSS, stylelint()]
 };
