@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './index.css';
+
 import store from './app/redux/store';
+
+import Menu from './app/Menu';
 import MyAwesomeReactComponent from './home/MyAwesomeReactComponent';
 
 injectTapEventPlugin();
@@ -16,11 +19,7 @@ ReactDOM.render(
     <MuiThemeProvider>
       <Router>
         <div>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/topics">Topics</Link></li>
-          </ul>
+          <Menu />
 
           <hr />
 
