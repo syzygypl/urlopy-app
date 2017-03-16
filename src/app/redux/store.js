@@ -6,10 +6,10 @@ import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import rootReducer from './rootReducer';
 
 const config = {
-  apiKey: '<your-api-key>',
-  authDomain: '<your-auth-domain>',
-  databaseURL: '<your-database-url>',
-  storageBucket: '<your-storage-bucket>',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 };
 
 const store = createStore(
