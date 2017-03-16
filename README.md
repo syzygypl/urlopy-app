@@ -2,7 +2,7 @@
 
 ## Set-up
 
-Run:
+Rename .env.default to .env and then run:
 
 * `yarn`
 
