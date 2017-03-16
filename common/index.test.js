@@ -8,5 +8,5 @@ describe('zip', () => {
 
     assert.deepEqual(zip(arr1, arr2), { age: 30 });
     assert.deepEqual(zip(arr2, arr1), { 30: 'age' });
-  })
+  });
 });
