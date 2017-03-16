@@ -1,11 +1,9 @@
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { reactReduxFirebase } from 'react-redux-firebase';
+import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 
 import rootReducer from '../rootReducer';
-
-const middleware = [thunk];
 
 const config = {
   apiKey: '<your-api-key>',
@@ -14,13 +12,15 @@ const config = {
   storageBucket: '<your-storage-bucket>',
 };
 
-const createStoreWithFirebase = compose(
-  reactReduxFirebase(config, { userProfile: 'users' }),
-)(createStore);
-
-export default createStoreWithFirebase(
+const store = createStore(
   rootReducer,
+  {},
   composeWithDevTools(
-    applyMiddleware(...middleware),
+    applyMiddleware(
+      thunk.withExtraArgument(getFirebase),
+    ),
+    reactReduxFirebase(config, { userProfile: 'users', enableLogging: false }),
   ),
 );
+
+export default store;
