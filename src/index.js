@@ -6,8 +6,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import './index.css';
-import store from './store';
-import MyAwesomeReactComponent from './MyAwesomeReactComponent';
+import store from './app/redux/store';
+import MyAwesomeReactComponent from './home/MyAwesomeReactComponent';
 
 injectTapEventPlugin();
 

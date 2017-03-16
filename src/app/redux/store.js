@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 
-import rootReducer from '../rootReducer';
+import rootReducer from './rootReducer';
 
 const config = {
   apiKey: '<your-api-key>',
