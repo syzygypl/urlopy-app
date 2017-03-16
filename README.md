@@ -32,3 +32,5 @@ Look for `common` folder under root directory
 ## Testing
 
 Run `yarn test`
+
+If you encounter any problems, try to `brew install watchman` and then run `yarn test` again
