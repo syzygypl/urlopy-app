@@ -5,4 +5,4 @@ const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
 });
 
-export default state => state;
+export default rootReducer;
