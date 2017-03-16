@@ -18,7 +18,7 @@ const createStoreWithFirebase = compose(
   reactReduxFirebase(config, { userProfile: 'users' }),
 )(createStore);
 
-export default createStore(
+export default createStoreWithFirebase(
   rootReducer,
   composeWithDevTools(
     applyMiddleware(...middleware),
