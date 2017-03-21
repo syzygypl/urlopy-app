@@ -1,0 +1,45 @@
+{
+  "comments": {
+    "-Kfku7Q6PmcEMVf-Ddwh": {
+      "-KfkuZNItBcz-VzRVfZv": {
+        "addedDate": 1490100569684,
+        "authorID": "1",
+        "body": "a comment",
+        "modifiedDate": 1490100569684
+      }
+    }
+  },
+  "users": [
+    {
+      "mail": "sancho@panza.pl",
+      "name": "Sancho Panza"
+    },
+    {
+      "mail": "baltazar@gabka.pl",
+      "name": "Baltazar Gąbka"
+    },
+    {
+      "mail": "mr@sandman.pl",
+      "name": "Sandman"
+    }
+  ],
+  "vacations": {
+    "-Kfku7Q6PmcEMVf-Ddwh": {
+      "-Kfku7t2RBSt8TtWgtvW": {
+        "addedDate": 1490100457088,
+        "endDate": 1490100457088,
+        "modifiedDate": 1490100457088,
+        "startDate": 1490100457088
+      }
+    }
+  },
+  "vacationsRequests": [
+    null,
+    {
+      "-Kfku7Q6PmcEMVf-Ddwh": {
+        "status": "accepted",
+        "vacationerID": "1"
+      }
+    }
+  ]
+}
