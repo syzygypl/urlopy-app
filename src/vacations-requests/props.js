@@ -90,6 +90,7 @@ export {
 
   vacation,
   vacations,
+  vacationsRequest,
   vacationsRequests,
   vacationsRequestsID,
 
