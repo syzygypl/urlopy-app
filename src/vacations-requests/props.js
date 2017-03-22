@@ -47,7 +47,7 @@ const comment = PropTypes.shape({
   modifiedDate,
 
   body: PropTypes.string,
-  authorID: PropTypes.number,
+  authorID: PropTypes.string,
 });
 
 const comments = PropTypes.oneOfType([
@@ -93,6 +93,7 @@ export {
   vacationsRequests,
   vacationsRequestsID,
 
+  comment,
   commentID,
   commentBody,
 

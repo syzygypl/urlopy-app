@@ -1,12 +1,15 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
-import Comment from './Comment';
+import AddComment from './AddComment';
+import ViewComment from './ViewComment';
+
 import * as props from './props';
 
-function Comments({ users, currentUserID, firebase, comments, vacationsRequestsID }) {
+function Comments({ users, currentUserID, firebase, comments, vacationsRequestsID, commentBody }) {
   const addComment = (body, givenVacationsRequestsID) => firebase.push(`/comments/${givenVacationsRequestsID}`, {
     body,
     authorID: currentUserID,
@@ -19,20 +22,24 @@ function Comments({ users, currentUserID, firebase, comments, vacationsRequestsI
 
   return (
     <div>
-      <button onClick={() => addComment('a comment', vacationsRequestsID)}>
-        add comment
-      </button>
+      <AddComment
+        hasBody={!!commentBody}
+        author={users[currentUserID]}
+        handleSubmit={(evt) => {
+          evt.preventDefault();
+          addComment(commentBody, vacationsRequestsID);
+        }}
+      />
 
-      <ul>
+      <ul style={{ listStyle: 'none' }}>
         {Object
           .keys(comments)
           .map(commentID => (
-            <li key={commentID}>
-              <Comment
-                handleCommentDeletion={handleCommentDeletion}
+            <li style={{ margin: 4 }} key={commentID}>
+              <ViewComment
+                handleCommentDeletion={() => handleCommentDeletion(commentID)}
                 author={users[currentUserID]}
-                body={comments[commentID].body}
-                ID={commentID}
+                comment={comments[commentID]}
               />
             </li>
           ))}
@@ -45,11 +52,13 @@ function Comments({ users, currentUserID, firebase, comments, vacationsRequestsI
 Comments.defaultProps = {
   comments: {},
   users: {},
+  commentBody: '',
 };
 
 Comments.propTypes = {
   users: props.users,
   comments: props.comments,
+  commentBody: props.commentBody,
   firebase: props.firebase.isRequired,
   currentUserID: props.userID.isRequired,
   vacationsRequestsID: props.vacationsRequestsID.isRequired,
@@ -65,6 +74,7 @@ export default compose(
   connect(
     (state, ownProps) => ({
       users: dataToJS(state.firebase, 'users') || {},
+      commentBody: formValueSelector('addComment')(state, 'newCommentBody'),
       comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`) || {},
     }),
   ),
