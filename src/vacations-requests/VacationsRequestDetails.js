@@ -32,7 +32,8 @@ const VacationsRequestDetails = ({ match, firebase, vacationsRequest }) => {
   return (
     <Grid style={{ margin: 6, padding: 6 }} fluid>
       <Row>
-        <Col xs={5}>
+
+        <Col xs={6}>
 
           <VacationsRequestsStatus
             vacationsRequest={vacationsRequest}
@@ -41,20 +42,19 @@ const VacationsRequestDetails = ({ match, firebase, vacationsRequest }) => {
             doAfterPrompt={decideAfterPrompt}
           />
 
-        </Col>
-
-      </Row>
-      <Row>
-        <Col xs={6}>
           <Vacations vacationsRequestsID={match.params.ID} />
+
         </Col>
 
         <Col xs={6}>
+
           <Comments
             currentUserID={match.params.currentUserID}
             vacationsRequestsID={match.params.ID}
           />
+
         </Col>
+
       </Row>
 
 
