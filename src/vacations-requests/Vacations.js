@@ -14,12 +14,13 @@ const Vacations = ({ firebase, vacations, vacationsRequestsID }) => {
     endDate: Date.now(),
     addedDate: Date.now(),
     modifiedDate: Date.now(),
+    workDays: 4,
   });
 
   return (
     <Grid fluid>
 
-      <Row style={{ display: 'none' }}>
+      <Row >
         <Col xs={12} md={12}>
 
           <button onClick={() => addVacation(vacationsRequestsID)}>

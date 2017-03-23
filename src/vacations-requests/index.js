@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
+import VacationsRequestsTable from './VacationsRequestsTable';
+
 import * as props from './props';
 
 const VacationsRequests = ({ firebase, vacationsRequests, currentUserID }) => {
@@ -14,15 +16,35 @@ const VacationsRequests = ({ firebase, vacationsRequests, currentUserID }) => {
   });
 
   const addUsers = () => Promise.all([
-    firebase.set('/users/0', { name: 'Sancho Panza', mail: 'sancho@panza.pl' }),
-    firebase.set('/users/1', { name: 'Baltazar Gąbka', mail: 'baltazar@gabka.pl' }),
-    firebase.set('/users/2', { name: 'Sandman', mail: 'mr@sandman.pl' }),
+    firebase.set('/users/sancho', { name: 'Sancho Panza', mail: 'sancho@panza.pl' }),
+    firebase.set('/users/baltazar', { name: 'Baltazar Gąbka', mail: 'baltazar@gabka.pl' }),
+    firebase.set('/users/sandman', { name: 'Sandman', mail: 'mr@sandman.pl' }),
   ]);
+
+  const vacationsRequestsList = (
+    <ul>
+      { Object
+        .keys(vacationsRequests)
+        .map(vacationRequestID => (
+          <li
+            key={vacationRequestID}
+            style={{ border: '1px solid black', margin: 6, padding: 6 }}
+          >
+            <Link to={`/vacationsRequests/${currentUserID}/${vacationRequestID}`}>
+              details
+            </Link>
+
+            {JSON.stringify(vacationsRequests[vacationRequestID])}
+          </li>
+        ))
+      }
+    </ul>
+  );
 
   return (
     <Grid fluid>
 
-      <Row style={{ display: 'none' }}>
+      <Row >
 
         <button onClick={addVacationsRequest}>
           add vac
@@ -36,29 +58,14 @@ const VacationsRequests = ({ firebase, vacationsRequests, currentUserID }) => {
 
       <Row>
         <Col xs={12} md={12}>
+          <div style={{ display: 'initial' }}>{vacationsRequestsList}</div>
 
-          <ul>
-            { Object
-              .keys(vacationsRequests)
-              .map(vacationRequestID => (
-                <li
-                  key={vacationRequestID}
-                  style={{ border: '1px solid black', margin: 6, padding: 6 }}
-                >
-                  <Link to={`/vacationsRequests/${currentUserID}/${vacationRequestID}`}>
-                    details
-                  </Link>
-
-                  {JSON.stringify(vacationsRequests[vacationRequestID])}
-                </li>
-              ))
-            }
-          </ul>
+          <VacationsRequestsTable limitToLast="100" />
 
         </Col>
       </Row>
-    </Grid>
 
+    </Grid>
   );
 };
 
