@@ -3,7 +3,7 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'mate
 
 const VacationsRequestsTableShell = ({ children }) => (
   <Table>
-    <TableHeader>
+    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
       <TableRow>
         <TableHeaderColumn>Nazwisko i imię</TableHeaderColumn>
         <TableHeaderColumn>Status</TableHeaderColumn>
@@ -12,7 +12,7 @@ const VacationsRequestsTableShell = ({ children }) => (
         <TableHeaderColumn>Koniec</TableHeaderColumn>
       </TableRow>
     </TableHeader>
-    <TableBody>
+    <TableBody displayRowCheckbox={false}>
       {children}
     </TableBody>
   </Table>
