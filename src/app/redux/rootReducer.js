@@ -6,7 +6,7 @@ import rowsReducer from '../../vacations-requests/Vacations/rowsReducer';
 const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
   form: formReducer,
-  rows: rowsReducer,
+  sortRowsBy: rowsReducer,
 });
 
 export default rootReducer;
