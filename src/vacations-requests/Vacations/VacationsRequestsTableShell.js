@@ -1,23 +1,47 @@
+import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
-const VacationsRequestsTableShell = ({ rowsData }, context) => {
+import R from 'ramda';
+
+const VacationsRequestsTableShell = ({ rows, sortBy }, context) => {
   const onCellClick = ({ vrID, userID }) => context.router.history.push(`/vacationsRequests/${userID}/${vrID}`);
 
   return (
-    <Table onCellClick={idx => onCellClick(rowsData[idx])}>
+    <Table onCellClick={idx => onCellClick(rows[idx])}>
       <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
         <TableRow>
-          <TableHeaderColumn>Nazwisko i imię</TableHeaderColumn>
-          <TableHeaderColumn>Status</TableHeaderColumn>
-          <TableHeaderColumn>Ilość dni urlopowych</TableHeaderColumn>
-          <TableHeaderColumn>Początek</TableHeaderColumn>
-          <TableHeaderColumn>Koniec</TableHeaderColumn>
+
+          <TableHeaderColumn>
+            <button onClick={() => sortBy('userName', rows)}>sortuj</button>
+            Nazwisko i imię
+          </TableHeaderColumn>
+
+          <TableHeaderColumn>
+            <button onClick={() => sortBy('status', rows)}>sortuj</button>
+            Status
+          </TableHeaderColumn>
+
+          <TableHeaderColumn>
+            <button onClick={() => sortBy('totalWorkDays', rows)}>sortuj</button>
+            Ilość dni urlopowych
+          </TableHeaderColumn>
+
+          <TableHeaderColumn>
+            <button onClick={() => sortBy('startDate', rows)}>sortuj</button>
+            Początek
+          </TableHeaderColumn>
+
+          <TableHeaderColumn>
+            <button onClick={() => sortBy('endDate', rows)}>sortuj</button>
+            Koniec
+          </TableHeaderColumn>
+
         </TableRow>
       </TableHeader>
       <TableBody showRowHover displayRowCheckbox={false}>
         {
-          rowsData.map(({ key, userName, status, totalWorkDays, startDate, endDate }) => (
+          rows.map(({ key, userName, status, totalWorkDays, startDate, endDate }) => (
             <TableRow key={key}>
               <TableRowColumn>{userName}</TableRowColumn>
               <TableRowColumn>{status}</TableRowColumn>
@@ -35,7 +59,7 @@ const VacationsRequestsTableShell = ({ rowsData }, context) => {
 VacationsRequestsTableShell.contextTypes = { router: PropTypes.object };
 
 VacationsRequestsTableShell.propTypes = {
-  rowsData: PropTypes.arrayOf(PropTypes.shape({
+  rows: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string.isRequired,
     endDate: PropTypes.number,
     startDate: PropTypes.number,
@@ -43,6 +67,19 @@ VacationsRequestsTableShell.propTypes = {
     userName: PropTypes.string,
     status: PropTypes.string,
   })).isRequired,
+  sortBy: PropTypes.func.isRequired,
 };
 
-export default VacationsRequestsTableShell;
+export default connect(
+  ({ rows }, ownProps) => ({
+    rows: R.isEmpty(rows) ? ownProps.initialRows : rows,
+  })
+  ,
+  dispatch => ({
+    sortBy: (key, rows) => {
+      const sorter = R.sortWith([R.ascend(R.prop(key))]);
+
+      dispatch({ type: 'SORT_ROWS_DATA', payload: sorter(rows) });
+    },
+  }),
+)(VacationsRequestsTableShell);

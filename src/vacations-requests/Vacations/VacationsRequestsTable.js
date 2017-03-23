@@ -10,7 +10,7 @@ import VacationsRequestsTableShell from './VacationsRequestsTableShell';
 
 const VacationsRequestsTable = ({ vacationsRequests, users, vacations }) => (
   <VacationsRequestsTableShell
-    rowsData={
+    initialRows={
      Object
       .keys(vacations)
       .map((vrID) => {
