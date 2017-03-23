@@ -7,7 +7,7 @@ import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 import AddComment from './AddComment';
 import ViewComment from './ViewComment';
 
-import * as props from './props';
+import * as props from '../props';
 
 function Comments({ users, currentUserID, firebase, comments, vacationsRequestsID, commentBody }) {
   const addComment = (body, givenVacationsRequestsID) => firebase.push(`/comments/${givenVacationsRequestsID}`, {

@@ -6,7 +6,7 @@ import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
 import Vacation from './Vacation';
 
-import * as props from './props';
+import * as props from '../props';
 
 const Vacations = ({ firebase, vacations, vacationsRequestsID }) => {
   const addVacation = givenVacationsRequestsID => firebase.push(`/vacations/${givenVacationsRequestsID}`, {

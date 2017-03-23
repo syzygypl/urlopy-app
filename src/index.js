@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Menu from './app/Menu';
 import VacationsRequests from './vacations-requests/';
-import VacationsRequestDetails from './vacations-requests/VacationsRequestDetails';
+import VacationsRequestDetails from './vacations-requests/Vacations/VacationsRequestDetails';
 
 import './index.css';
 

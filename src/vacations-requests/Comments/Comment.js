@@ -5,7 +5,7 @@ import Divider from 'material-ui/Divider';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebase as withFirebase } from 'react-redux-firebase';
 
-import * as props from './props';
+import * as props from '../props';
 
 const Comment = ({ author, body, addedDate, actionButton }) => {
   const authorInitials = author.name.split(' ').map(namePart => namePart[0]).join('');

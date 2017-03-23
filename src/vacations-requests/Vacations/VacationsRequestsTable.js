@@ -5,7 +5,7 @@ import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
 
 import R from 'ramda';
-import { users as usersProp, vacations as vacationsProp, vacationsRequests as vacationsRequestsProp } from './props';
+import { users as usersProp, vacations as vacationsProp, vacationsRequests as vacationsRequestsProp } from '../props';
 
 import VacationsRequestsTableShell from './VacationsRequestsTableShell';
 

@@ -7,7 +7,7 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 
-import * as props from './props';
+import * as props from '../props';
 
 const VacationsRequestsStatus = ({
   vacationsRequest,

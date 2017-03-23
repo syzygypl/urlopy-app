@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as props from './props';
+import * as props from '../props';
 
 const Vacation = ({ vacation }) => (
   <div>

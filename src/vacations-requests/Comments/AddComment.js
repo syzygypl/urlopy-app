@@ -7,7 +7,7 @@ import SendIcon from 'material-ui/svg-icons/content/send';
 
 import Comment from './Comment';
 
-import * as props from './props';
+import * as props from '../props';
 
 function AddComment({ handleSubmit, author, hasBody }) {
   const actionButton = (

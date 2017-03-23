@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
-import Comments from './Comments';
+import Comments from '../Comments/Comments';
 import Vacations from './Vacations';
 import VacationsRequestsStatus from './VacationsRequestsStatus';
 
-import * as props from './props';
+import * as props from '../props';
 
 const doAfterPrompt = (callback, ...args) => {
   const prompt = 'Czy podjąć decyzję?';

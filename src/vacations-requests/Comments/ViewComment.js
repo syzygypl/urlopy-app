@@ -7,7 +7,7 @@ import { firebase as withFirebase } from 'react-redux-firebase';
 
 import Comment from './Comment';
 
-import * as props from './props';
+import * as props from '../props';
 
 const ViewComment = ({ author, comment, handleCommentDeletion }) => {
   const actionButton = (

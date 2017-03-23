@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 
-import VacationsRequestsTable from './VacationsRequestsTable';
+import VacationsRequestsTable from './Vacations/VacationsRequestsTable';
 
 import * as props from './props';
 
