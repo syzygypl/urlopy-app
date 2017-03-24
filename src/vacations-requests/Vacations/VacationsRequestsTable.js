@@ -6,6 +6,8 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 import R from 'ramda';
 
+import Column from './Column';
+
 const getInitialRows = ({ vacationsRequests, vacations, users }) => Object
   .keys(vacations)
   .map((vrID) => {
@@ -29,34 +31,27 @@ const getInitialRows = ({ vacationsRequests, vacations, users }) => Object
     };
   });
 
-const VacationsRequestsTableShell = ({ rows, sortBy }, context) => {
+const VacationsRequestsTableShell = ({ rows }, context) => {
   const onCellClick = ({ vrID, userID }) => context.router.history.push(`/vacationsRequests/${userID}/${vrID}`);
 
   return (
     <Table onCellClick={idx => onCellClick(rows[idx])}>
       <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
         <TableRow>
-
-          <TableHeaderColumn>
-            <button onClick={() => sortBy('userName')}>sortuj</button>
-            Nazwisko i imię
-          </TableHeaderColumn>
-
-          <TableHeaderColumn>
-            <button onClick={() => sortBy('status')}>sortuj</button>
-            Status
-          </TableHeaderColumn>
-
-          <TableHeaderColumn>
-            <button onClick={() => sortBy('totalWorkDays')}>sortuj</button>
-            Ilość dni urlopowych
-          </TableHeaderColumn>
-
-          <TableHeaderColumn>
-            <button onClick={() => sortBy('startDate')}>sortuj</button>
-            Pierwszy dzień urlopu
-          </TableHeaderColumn>
-
+          {
+            [
+              ['userName', 'Nazwisko i imię'],
+              ['status', 'status'],
+              ['totalWorkDays', 'Ilość dni urlopu'],
+              ['startDate', 'początek urlopu'],
+            ].map(columnTuple => (
+              <TableHeaderColumn key={columnTuple[0]}>
+                <Column field={columnTuple[0]}>
+                  {columnTuple[1]}
+                </Column>
+              </TableHeaderColumn>
+            ))
+          }
         </TableRow>
       </TableHeader>
       <TableBody showRowHover displayRowCheckbox={false}>
@@ -90,7 +85,6 @@ VacationsRequestsTableShell.propTypes = {
     userName: PropTypes.string,
     status: PropTypes.string,
   })).isRequired,
-  sortBy: PropTypes.func.isRequired,
 };
 
 export default compose(
@@ -113,8 +107,5 @@ export default compose(
         rows: R.sortWith([R[sortRowsBy.order](R.prop(sortRowsBy.field))])(rowsData),
       });
     },
-    dispatch => ({
-      sortBy: key => dispatch({ type: 'SORT_ROWS_DATA', payload: key }),
-    }),
   ),
 )(VacationsRequestsTableShell);
