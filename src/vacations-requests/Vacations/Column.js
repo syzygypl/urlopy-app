@@ -6,7 +6,7 @@ import SortingOrderIndicator from './SortingOrderIndicator';
 const Column = ({ sortBy, field, children }) => (
   <div
     onClick={() => sortBy(field)}
-    style={{ display: 'flex', justifyContent: 'space-between' }}
+    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
   >
 
     {children}

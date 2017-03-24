@@ -1,11 +1,21 @@
 import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 
-const SortingOrderIndicator = ({ field, sortRowsBy }) => (
-  (sortRowsBy.field === field)
-    ? <div>{sortRowsBy.order === 'ascend' ? '^' : 'v'}</div>
-    : null
-);
+import ArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
+import ArrowDownward from 'material-ui/svg-icons/navigation/arrow-downward';
+
+import R from 'ramda';
+
+const SortingOrderIndicator = ({ field, sortRowsBy }) => {
+  const sameField = sortRowsBy.field === field;
+
+  return sameField
+    ? R.cond([
+      [() => sortRowsBy.order === 'ascend', () => <ArrowUpward />],
+      [() => sortRowsBy.order === 'descend', () => <ArrowDownward />],
+    ])()
+    : null;
+};
 
 SortingOrderIndicator.propTypes = {
   field: PropTypes.string.isRequired,
