@@ -7,66 +7,62 @@ import { firebase as withFirebase } from 'react-redux-firebase';
 
 import * as props from '../props';
 
-const Comment = ({ author, body, addedDate, actionButton }) => {
-  const authorInitials = author.name.split(' ').map(namePart => namePart[0]).join('');
+const Comment = ({ author, body, addedDate, actionButton }) => (
+  <Grid style={{ margin: 6, padding: 6 }} fluid>
 
-  return (
-    <Grid style={{ margin: 6, padding: 6 }} fluid>
+    <Row>
 
-      <Row>
+      <Col xs={1} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
-        <Col xs={1} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div>
+
+          <Avatar size={60} style={{ fontSize: '0.8em', textAlign: 'center' }}>{author.name}</Avatar>
 
           <div>
-
-            <Avatar size={60}>{authorInitials}</Avatar>
-
-            <div>
-              {addedDate}
-            </div>
-
+            {addedDate}
           </div>
 
-
-        </Col>
-
-        <Col xs={6}>
-
-          <Row>
-
-            <Col xs={12}>
-
-              <Paper zDepth={2}>
-
-                {body}
-
-                <Divider />
-
-                <Row end="xs">
-
-                  <Col xs={12}>
-
-                    {actionButton}
-
-                  </Col>
+        </div>
 
 
-                </Row>
+      </Col>
+
+      <Col xs={6}>
+
+        <Row>
+
+          <Col xs={12}>
+
+            <Paper zDepth={2}>
+
+              {body}
+
+              <Divider />
+
+              <Row end="xs">
+
+                <Col xs={12}>
+
+                  {actionButton}
+
+                </Col>
 
 
-              </Paper>
+              </Row>
 
-            </Col>
 
-          </Row>
+            </Paper>
 
-        </Col>
+          </Col>
 
-      </Row>
+        </Row>
 
-    </Grid>
-  );
-};
+      </Col>
+
+    </Row>
+
+  </Grid>
+);
 
 Comment.defaultProps = {
   addedDate: '',
