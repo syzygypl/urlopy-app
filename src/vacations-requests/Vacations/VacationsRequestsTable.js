@@ -112,7 +112,7 @@ export default compose(
       const rowsData = getInitialRows({ vacationsRequests, vacations, users });
 
       return ({
-        rows: R.sortWith([R.ascend(R.prop(sortRowsBy))])(rowsData),
+        rows: R.sortWith([R[sortRowsBy.order](R.prop(sortRowsBy.field))])(rowsData),
       });
     },
     dispatch => ({
