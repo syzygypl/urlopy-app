@@ -1,35 +1,43 @@
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+import { firebaseConnect, dataToJS, isLoaded } from 'react-redux-firebase';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 import R from 'ramda';
 
 import Column from './Column';
 
-const getInitialRows = ({ vacationsRequests, vacations, users }) => Object
-  .keys(vacations)
-  .map((vrID) => {
-    const vacationsPerRequest = vacations[vrID] || {};
-    const vacReqData = Object.values(vacationsRequests).map(vr => vr[vrID])[0] || {};
+const getInitialRows = ({ vacationsRequests, vacations, users }) => {
+  const toLoad = [vacationsRequests, vacations, users];
+  const isDataLoaded = toLoad.filter(isLoaded).length === toLoad.length;
 
-    const user = users[vacReqData.vacationerID] || {};
-    const vacationsIDs = Object.keys(vacationsPerRequest);
+  return !isDataLoaded
+    ? []
+    : Object
+      .keys(vacations)
+      .map((vrID) => {
+        const vacationsPerRequest = vacations[vrID];
 
-    const vacationsList = vacationsIDs.map(vacationID => vacationsPerRequest[vacationID]);
+        const vacReqData = Object.values(vacationsRequests).map(vr => vr[vrID]).filter(d => d)[0];
 
-    return {
-      key: user.mail + vrID,
-      userID: vacReqData.vacationerID,
-      vrID,
-      userName: user.name,
-      status: vacReqData.status,
-      endDate: vacationsList.map(R.prop('endDate')).reduce(R.max),
-      startDate: vacationsList.map(R.prop('startDate')).reduce(R.min),
-      totalWorkDays: vacationsList.map(R.prop('workDays')).reduce(R.add, 0),
-    };
-  });
+        const user = users[vacReqData.vacationerID];
+        const vacationsIDs = Object.keys(vacationsPerRequest);
+
+        const vacationsList = vacationsIDs.map(vacationID => vacationsPerRequest[vacationID]);
+
+        return {
+          key: user.mail + vrID,
+          userID: vacReqData.vacationerID,
+          vrID,
+          userName: user.name,
+          status: vacReqData.status,
+          endDate: vacationsList.map(R.prop('endDate')).reduce(R.max),
+          startDate: vacationsList.map(R.prop('startDate')).reduce(R.min),
+          totalWorkDays: vacationsList.map(R.prop('workDays')).reduce(R.add, 0),
+        };
+      });
+};
 
 const VacationsRequestsTableShell = ({ rows }, context) => {
   const onCellClick = ({ vrID, userID }) => context.router.history.push(`/vacationsRequests/${userID}/${vrID}`);
@@ -97,9 +105,9 @@ export default compose(
   )),
   connect(
     ({ sortRowsBy, firebase }) => {
-      const vacationsRequests = dataToJS(firebase, 'vacationsRequests') || {};
-      const vacations = dataToJS(firebase, 'vacations') || {};
-      const users = dataToJS(firebase, 'users') || {};
+      const vacationsRequests = dataToJS(firebase, 'vacationsRequests');
+      const vacations = dataToJS(firebase, 'vacations');
+      const users = dataToJS(firebase, 'users');
 
       const rowsData = getInitialRows({ vacationsRequests, vacations, users });
 
