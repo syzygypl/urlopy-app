@@ -10,6 +10,8 @@ import Comment from './Comment';
 import * as props from '../props';
 
 const ViewComment = ({ author, comment, handleCommentDeletion }) => {
+  const addedDateObj = new Date(comment.addedDate);
+
   const actionButton = (
     <div style={{ background: lightBlue200 }}>
       <IconButton
@@ -35,7 +37,7 @@ const ViewComment = ({ author, comment, handleCommentDeletion }) => {
   return (
     <Comment
       author={author}
-      addedDate={new Date(comment.addedDate).toDateString()}
+      addedDate={`${addedDateObj.toDateString()} ${addedDateObj.toTimeString()}`}
       body={commentBody}
       actionButton={actionButton}
     />

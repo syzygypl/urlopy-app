@@ -18,12 +18,11 @@ const Comment = ({ author, body, addedDate, actionButton }) => (
 
           <Avatar size={60} style={{ fontSize: '0.8em', textAlign: 'center' }}>{author.name}</Avatar>
 
-          <div>
+          <div style={{ fontSize: '0.7em', textAlign: 'center' }}>
             {addedDate}
           </div>
 
         </div>
-
 
       </Col>
 
