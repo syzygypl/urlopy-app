@@ -7,7 +7,7 @@ const Vacation = ({ vacation }) => (
     <div>
       <p>Start: {(new Date(vacation.startDate)).toDateString()}</p>
       <p>Koniec: {(new Date(vacation.endDate)).toDateString()}</p>
-      <p>Ilość dni?</p>
+      <p>Ilość dni: {vacation.workDays}</p>
     </div>
   </div>
 );
