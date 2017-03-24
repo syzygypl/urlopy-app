@@ -34,15 +34,19 @@ function Comments({ users, currentUserID, firebase, comments, vacationsRequestsI
       <ul style={{ listStyle: 'none' }}>
         {Object
           .keys(comments)
-          .map(commentID => (
-            <li style={{ margin: 4 }} key={commentID}>
-              <ViewComment
-                handleCommentDeletion={() => handleCommentDeletion(commentID)}
-                author={users[currentUserID]}
-                comment={comments[commentID]}
-              />
-            </li>
-          ))}
+          .map((commentID) => {
+            const comment = comments[commentID];
+
+            return (
+              <li style={{ margin: 4 }} key={commentID}>
+                <ViewComment
+                  handleCommentDeletion={() => handleCommentDeletion(commentID)}
+                  author={users[comment.authorID]}
+                  comment={comment}
+                />
+              </li>
+            );
+          })}
       </ul>
 
     </div>
@@ -73,6 +77,7 @@ export default compose(
   )),
   connect(
     (state, ownProps) => ({
+      currentUserID: state.currentUserID,
       users: dataToJS(state.firebase, 'users') || {},
       commentBody: formValueSelector('addComment')(state, 'newCommentBody'),
       comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`) || {},

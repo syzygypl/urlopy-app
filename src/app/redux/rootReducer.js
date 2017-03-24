@@ -7,6 +7,7 @@ const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
   form: formReducer,
   sortRowsBy: rowsReducer,
+  currentUserID: () => 'sancho',
 });
 
 export default rootReducer;

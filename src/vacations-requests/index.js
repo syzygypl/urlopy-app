@@ -1,82 +1,43 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 
 import VacationsRequestsTable from './Vacations/VacationsRequestsTable';
 
-import * as props from './props';
+const VacationsRequests = ({ addUsers, currentUserID, addVacationsRequest }) => (
+  <Grid fluid>
 
-const VacationsRequests = ({ firebase, vacationsRequests, currentUserID }) => {
-  const addVacationsRequest = () => firebase.push(`/vacationsRequests/${currentUserID}`, {
-    vacationerID: currentUserID,
-    status: 'accepted',
-  });
+    <Row >
 
-  const addUsers = () => Promise.all([
-    firebase.set('/users/sancho', { name: 'Sancho Panza', mail: 'sancho@panza.pl' }),
-    firebase.set('/users/baltazar', { name: 'Baltazar Gąbka', mail: 'baltazar@gabka.pl' }),
-    firebase.set('/users/sandman', { name: 'Sandman', mail: 'mr@sandman.pl' }),
-  ]);
+      <button onClick={() => addVacationsRequest(currentUserID)}>
+        add vac
+      </button>
 
-  const vacationsRequestsList = (
-    <ul>
-      { Object
-        .keys(vacationsRequests)
-        .map(vacationRequestID => (
-          <li
-            key={vacationRequestID}
-            style={{ border: '1px solid black', margin: 6, padding: 6 }}
-          >
-            <Link to={`/vacationsRequests/${currentUserID}/${vacationRequestID}`}>
-              details
-            </Link>
+      <button onClick={addUsers}>
+        add users
+      </button>
 
-            {JSON.stringify(vacationsRequests[vacationRequestID])}
-          </li>
-        ))
-      }
-    </ul>
-  );
+    </Row>
 
-  return (
-    <Grid fluid>
+    <Row>
+      <Col xs={12} md={12}>
+        <VacationsRequestsTable limitToLast="100" />
+      </Col>
+    </Row>
 
-      <Row >
-
-        <button onClick={addVacationsRequest}>
-          add vac
-        </button>
-
-        <button onClick={addUsers}>
-          add users
-        </button>
-
-      </Row>
-
-      <Row>
-        <Col xs={12} md={12}>
-          <div style={{ display: 'initial' }}>{vacationsRequestsList}</div>
-
-          <VacationsRequestsTable limitToLast="100" />
-
-        </Col>
-      </Row>
-
-    </Grid>
-  );
-};
+  </Grid>
+);
 
 VacationsRequests.defaultProps = {
   vacationsRequests: {},
 };
 
 VacationsRequests.propTypes = {
-  firebase: props.firebase.isRequired,
-  currentUserID: props.userID.isRequired,
-  vacationsRequests: props.vacationsRequests,
+  addUsers: PropTypes.func.isRequired,
+  currentUserID: PropTypes.string.isRequired,
+  addVacationsRequest: PropTypes.func.isRequired,
 };
 
 export default compose(
@@ -86,8 +47,33 @@ export default compose(
     ]
   )),
   connect(
-    ({ firebase }, ownProps) => ({
-      vacationsRequests: dataToJS(firebase, `vacationsRequests/${ownProps.currentUserID}`) || {},
-    }),
+    ({ currentUserID }) => ({ currentUserID }),
+    ((dispatch, ownProps) =>
+        ({
+          addUsers() {
+            return Promise.all([
+              ownProps.firebase.set('/users/sancho', { name: 'Sancho Panza', mail: 'sancho@panza.pl' }),
+              ownProps.firebase.set('/users/baltazar', { name: 'Baltazar Gąbka', mail: 'baltazar@gabka.pl' }),
+              ownProps.firebase.set('/users/sandman', { name: 'Sandman', mail: 'mr@sandman.pl' }),
+            ]);
+          },
+          addVacationsRequest(ID) {
+            const addVacation = vacationsRequestID => ownProps.firebase.push(`/vacations/${vacationsRequestID}`, {
+              startDate: Date.now(),
+              endDate: Date.now(),
+              addedDate: Date.now(),
+              modifiedDate: Date.now(),
+              workDays: 4,
+            });
+
+            return ownProps.firebase
+              .push(`/vacationsRequests/${ID}`, {
+                vacationerID: ID,
+                status: 'accepted',
+              })
+              .then(newVacationsRequest => addVacation(newVacationsRequest.getKey()));
+          },
+        })
+    ),
   ),
 )(VacationsRequests);

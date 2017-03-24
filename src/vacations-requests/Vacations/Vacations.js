@@ -8,54 +8,33 @@ import Vacation from './Vacation';
 
 import * as props from '../props';
 
-const Vacations = ({ firebase, vacations, vacationsRequestsID }) => {
-  const addVacation = givenVacationsRequestsID => firebase.push(`/vacations/${givenVacationsRequestsID}`, {
-    startDate: Date.now(),
-    endDate: Date.now(),
-    addedDate: Date.now(),
-    modifiedDate: Date.now(),
-    workDays: 4,
-  });
+const Vacations = ({ vacations }) => (
+  <Grid fluid>
 
-  return (
-    <Grid fluid>
+    <Row>
+      <Col xs={12} md={12}>
 
-      <Row >
-        <Col xs={12} md={12}>
+        <ul>
+          {
+            Object
+              .keys(vacations)
+              .map(vacationID => (
+                <li
+                  key={vacationID}
+                  style={{ border: '1px solid black', margin: 6, padding: 6 }}
+                >
+                  <Vacation
+                    vacation={vacations[vacationID]}
+                  />
+                </li>
+              ))
+          }
+        </ul>
 
-          <button onClick={() => addVacation(vacationsRequestsID)}>
-            add vacation
-          </button>
-
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12} md={12}>
-
-          <ul>
-            {
-              Object
-                .keys(vacations)
-                .map(vacationID => (
-                  <li
-                    key={vacationID}
-                    style={{ border: '1px solid black', margin: 6, padding: 6 }}
-                  >
-                    <Vacation
-                      vacation={vacations[vacationID]}
-                    />
-                  </li>
-                ))
-            }
-          </ul>
-
-        </Col>
-      </Row>
-    </Grid>
-
-  );
-};
+      </Col>
+    </Row>
+  </Grid>
+);
 
 Vacations.defaultProps = {
   vacations: {},
@@ -63,8 +42,6 @@ Vacations.defaultProps = {
 
 Vacations.propTypes = {
   vacations: props.vacations,
-  firebase: props.firebase.isRequired,
-  vacationsRequestsID: props.vacationsRequestsID.isRequired,
 };
 
 export default compose(

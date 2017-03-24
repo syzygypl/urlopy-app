@@ -48,10 +48,7 @@ const VacationsRequestDetails = ({ match, firebase, vacationsRequest }) => {
 
         <Col xs={6}>
 
-          <Comments
-            currentUserID={match.params.userID}
-            vacationsRequestsID={match.params.vacationsRequestID}
-          />
+          <Comments vacationsRequestsID={match.params.vacationsRequestID} />
 
         </Col>
 
