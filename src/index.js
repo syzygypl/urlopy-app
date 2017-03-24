@@ -9,6 +9,8 @@ import Menu from './app/Menu';
 import VacationsRequests from './vacations-requests/';
 import VacationsRequestDetails from './vacations-requests/Vacations/VacationsRequestDetails';
 
+import LogInPage from './log-in-page';
+
 import './index.css';
 
 import store from './app/redux/store';
@@ -25,8 +27,8 @@ ReactDOM.render(
           <hr />
 
           <Route exact path="/" component={() => (<div>home</div>)} />
-          <Route path="/about" component={() => (<div>About</div>)} />
-          <Route path="/topics" component={() => (<div>Topics</div>)} />
+
+          <Route path="/login" component={LogInPage} />
 
           <Route exact path="/vacationsRequests/" component={() => (<VacationsRequests />)} />
           <Route path="/vacationsRequests/:userID/:vacationsRequestID" component={VacationsRequestDetails} />
