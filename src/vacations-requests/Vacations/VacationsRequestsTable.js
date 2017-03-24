@@ -6,6 +6,8 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 import R from 'ramda';
 
+import statuses from '../../app/helpers/statuses';
+
 import Column from './Column';
 
 const getInitialRows = ({ vacationsRequests, vacations, users }) => {
@@ -35,7 +37,7 @@ const getInitialRows = ({ vacationsRequests, vacations, users }) => {
           userID: vacReqData.vacationerID,
           vrID,
           userName: user.name,
-          status: vacReqData.status,
+          status: statuses[vacReqData.status],
           endDate: vacationsList.map(R.prop('endDate')).reduce(R.max),
           startDate: vacationsList.map(R.prop('startDate')).reduce(R.min),
           totalWorkDays: vacationsList.map(R.prop('workDays')).reduce(R.add, 0),

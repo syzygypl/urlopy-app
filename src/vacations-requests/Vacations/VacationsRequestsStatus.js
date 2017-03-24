@@ -9,18 +9,14 @@ import SvgIconFace from 'material-ui/svg-icons/action/face';
 
 import * as props from '../props';
 
+import statuses from '../../app/helpers/statuses';
+
 const VacationsRequestsStatus = ({
   vacationsRequest,
   vacationsRequestID,
   currentUserID,
   doAfterPrompt,
 }) => {
-  const statuses = {
-    rejected: 'Odrzucone',
-    accepted: 'Zaakceptowane',
-    pending: 'Oczekujące',
-  };
-
   const rejectButton = (
     <RaisedButton
       label="odrzuć"
