@@ -24,7 +24,7 @@ const VacationsRequestsStatus = ({
   const rejectButton = (
     <RaisedButton
       label="odrzuć"
-      onClick={() => doAfterPrompt('rejected', currentUserID, vacationsRequestID)}
+      onClick={() => doAfterPrompt(vacationsRequest, 'rejected', currentUserID, vacationsRequestID)}
       backgroundColor={lightBlue200}
       icon={<ClearIcon />}
     />
@@ -33,7 +33,7 @@ const VacationsRequestsStatus = ({
   const acceptButton = (
     <RaisedButton
       label="akceptuj"
-      onClick={() => doAfterPrompt('accepted', currentUserID, vacationsRequestID)}
+      onClick={() => doAfterPrompt(vacationsRequest, 'accepted', currentUserID, vacationsRequestID)}
       icon={<DoneIcon />}
     />
   );

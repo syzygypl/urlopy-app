@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
@@ -10,59 +10,40 @@ import VacationsRequestsStatus from './VacationsRequestsStatus';
 
 import * as props from '../props';
 
-const doAfterPrompt = (callback, ...args) => {
-  const prompt = 'Czy podjąć decyzję?';
+import doAfterPrompt from '../../app/helpers/doAfterPrompt';
 
-  if (confirm(prompt)) {
-    callback(...args);
-  }
-};
+const VacationsRequestDetails = ({ match, decideAfterPrompt, vacationsRequest }) => (
+  <Grid style={{ margin: 6, padding: 6 }} fluid>
+    <Row>
 
-const VacationsRequestDetails = ({ match, firebase, vacationsRequest }) => {
-  const forVacationsRequest = (userID, vrID) => `/vacationsRequests/${userID}/${vrID}`;
+      <Col xs={6}>
 
-  const decide = (status, userID, vrID) => {
-    const link = forVacationsRequest(userID, vrID);
+        <VacationsRequestsStatus
+          vacationsRequest={vacationsRequest}
+          vacationsRequestID={match.params.vacationsRequestID}
+          currentUserID={match.params.userID}
+          doAfterPrompt={decideAfterPrompt}
+        />
 
-    return firebase.set(link, Object.assign({}, vacationsRequest, { status }));
-  };
+        <Vacations vacationsRequestsID={match.params.vacationsRequestID} />
 
-  const decideAfterPrompt = doAfterPrompt.bind(null, decide);
+      </Col>
 
-  return (
-    <Grid style={{ margin: 6, padding: 6 }} fluid>
-      <Row>
+      <Col xs={6}>
 
-        <Col xs={6}>
+        <Comments vacationsRequestsID={match.params.vacationsRequestID} />
 
-          <VacationsRequestsStatus
-            vacationsRequest={vacationsRequest}
-            vacationsRequestID={match.params.vacationsRequestID}
-            currentUserID={match.params.userID}
-            doAfterPrompt={decideAfterPrompt}
-          />
+      </Col>
 
-          <Vacations vacationsRequestsID={match.params.vacationsRequestID} />
+    </Row>
 
-        </Col>
-
-        <Col xs={6}>
-
-          <Comments vacationsRequestsID={match.params.vacationsRequestID} />
-
-        </Col>
-
-      </Row>
-
-
-    </Grid>
-  );
-};
+  </Grid>
+);
 
 VacationsRequestDetails.propTypes = {
   match: props.match.isRequired,
-  firebase: props.firebase.isRequired,
   vacationsRequest: props.vacationsRequest.isRequired,
+  decideAfterPrompt: PropTypes.func.isRequired,
 };
 
 export default compose(
@@ -72,8 +53,24 @@ export default compose(
     ]
   )),
   connect(
-    ({ firebase }, { match }) => ({
-      vacationsRequest: dataToJS(firebase, `vacationsRequests/${match.params.userID}/${match.params.vacationsRequestID}`) || {},
-    }),
+    ({ firebase }, ownProps) => {
+      const forVacationsRequest = (userID, vrID) => `/vacationsRequests/${userID}/${vrID}`;
+
+      const decide = (vacationsRequest, status, userID, vrID) => {
+        const link = forVacationsRequest(userID, vrID);
+
+        return ownProps.firebase.set(link, Object.assign({}, vacationsRequest, { status }));
+      };
+
+      const decideAfterPrompt = doAfterPrompt.bind(null, decide);
+
+      return {
+        decideAfterPrompt,
+        vacationsRequest: dataToJS(
+          firebase,
+          `vacationsRequests/${ownProps.match.params.userID}/${ownProps.match.params.vacationsRequestID}`,
+        ) || {},
+      };
+    },
   ),
 )(VacationsRequestDetails);
