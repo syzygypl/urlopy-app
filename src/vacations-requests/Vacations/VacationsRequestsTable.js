@@ -66,15 +66,20 @@ const VacationsRequestsTableShell = ({ rows, sortBy }, context) => {
       </TableHeader>
       <TableBody showRowHover displayRowCheckbox={false}>
         {
-          rows.map(({ key, userName, status, totalWorkDays, startDate, endDate }) => (
-            <TableRow key={key}>
-              <TableRowColumn>{userName}</TableRowColumn>
-              <TableRowColumn>{status}</TableRowColumn>
-              <TableRowColumn>{totalWorkDays}</TableRowColumn>
-              <TableRowColumn>{new Date(startDate).toDateString()}</TableRowColumn>
-              <TableRowColumn>{new Date(endDate).toDateString()}</TableRowColumn>
-            </TableRow>
-          ))
+          rows.map(({ key, userName, status, totalWorkDays, startDate, endDate }) => {
+            const endDateObj = new Date(endDate);
+            const startDateObj = new Date(startDate);
+
+            return (
+              <TableRow key={key}>
+                <TableRowColumn>{userName}</TableRowColumn>
+                <TableRowColumn>{status}</TableRowColumn>
+                <TableRowColumn>{totalWorkDays}</TableRowColumn>
+                <TableRowColumn>{`${startDateObj.toDateString()} ${startDateObj.toTimeString()}`}</TableRowColumn>
+                <TableRowColumn>{`${endDateObj.toDateString()} ${endDateObj.toTimeString()}`}</TableRowColumn>
+              </TableRow>
+            );
+          })
         }
       </TableBody>
     </Table>
