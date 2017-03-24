@@ -54,20 +54,14 @@ const VacationsRequestsTableShell = ({ rows, sortBy }, context) => {
 
           <TableHeaderColumn>
             <button onClick={() => sortBy('startDate')}>sortuj</button>
-            Początek
-          </TableHeaderColumn>
-
-          <TableHeaderColumn>
-            <button onClick={() => sortBy('endDate')}>sortuj</button>
-            Koniec
+            Pierwszy dzień urlopu
           </TableHeaderColumn>
 
         </TableRow>
       </TableHeader>
       <TableBody showRowHover displayRowCheckbox={false}>
         {
-          rows.map(({ key, userName, status, totalWorkDays, startDate, endDate }) => {
-            const endDateObj = new Date(endDate);
+          rows.map(({ key, userName, status, totalWorkDays, startDate }) => {
             const startDateObj = new Date(startDate);
 
             return (
@@ -76,7 +70,6 @@ const VacationsRequestsTableShell = ({ rows, sortBy }, context) => {
                 <TableRowColumn>{status}</TableRowColumn>
                 <TableRowColumn>{totalWorkDays}</TableRowColumn>
                 <TableRowColumn>{`${startDateObj.toDateString()} ${startDateObj.toTimeString()}`}</TableRowColumn>
-                <TableRowColumn>{`${endDateObj.toDateString()} ${endDateObj.toTimeString()}`}</TableRowColumn>
               </TableRow>
             );
           })
