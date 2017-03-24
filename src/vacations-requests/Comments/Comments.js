@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
@@ -9,17 +9,15 @@ import ViewComment from './ViewComment';
 
 import * as props from '../props';
 
-function Comments({ users, currentUserID, firebase, comments, vacationsRequestsID, commentBody }) {
-  const addComment = (body, givenVacationsRequestsID) => firebase.push(`/comments/${givenVacationsRequestsID}`, {
-    body,
-    authorID: currentUserID,
-    addedDate: Date.now(),
-    modifiedDate: Date.now(),
-  });
-
-  const deleteComment = (vrID, ID) => firebase.database().ref(`comments/${vrID}/${ID}`).remove();
-  const handleCommentDeletion = deleteComment.bind(null, vacationsRequestsID);
-
+function Comments({
+  users,
+  currentUserID,
+  addComment,
+  comments,
+  vacationsRequestsID,
+  commentBody,
+  deleteComment,
+}) {
   return (
     <div>
       <AddComment
@@ -27,7 +25,7 @@ function Comments({ users, currentUserID, firebase, comments, vacationsRequestsI
         author={users[currentUserID]}
         handleSubmit={(evt) => {
           evt.preventDefault();
-          addComment(commentBody, vacationsRequestsID);
+          addComment(currentUserID, commentBody, vacationsRequestsID);
         }}
       />
 
@@ -40,7 +38,7 @@ function Comments({ users, currentUserID, firebase, comments, vacationsRequestsI
             return (
               <li style={{ margin: 4 }} key={commentID}>
                 <ViewComment
-                  handleCommentDeletion={() => handleCommentDeletion(commentID)}
+                  handleCommentDeletion={() => deleteComment(vacationsRequestsID, commentID)}
                   author={users[comment.authorID]}
                   comment={comment}
                 />
@@ -63,8 +61,9 @@ Comments.propTypes = {
   users: props.users,
   comments: props.comments,
   commentBody: props.commentBody,
-  firebase: props.firebase.isRequired,
+  addComment: PropTypes.func.isRequired,
   currentUserID: props.userID.isRequired,
+  deleteComment: PropTypes.func.isRequired,
   vacationsRequestsID: props.vacationsRequestsID.isRequired,
 };
 
@@ -81,6 +80,19 @@ export default compose(
       users: dataToJS(state.firebase, 'users') || {},
       commentBody: formValueSelector('addComment')(state, 'newCommentBody'),
       comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`) || {},
+    }),
+    (dispatch, { firebase }) => ({
+      addComment(currentUserID, body, givenVacationsRequestsID) {
+        return firebase.push(`/comments/${givenVacationsRequestsID}`, {
+          body,
+          authorID: currentUserID,
+          addedDate: Date.now(),
+          modifiedDate: Date.now(),
+        });
+      },
+      deleteComment(vrID, ID) {
+        return firebase.database().ref(`comments/${vrID}/${ID}`).remove();
+      },
     }),
   ),
 )(Comments);
