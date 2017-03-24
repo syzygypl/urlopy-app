@@ -29,7 +29,7 @@ ReactDOM.render(
           <Route path="/topics" component={() => (<div>Topics</div>)} />
 
           <Route exact path="/vacationsRequests/" component={() => (<VacationsRequests currentUserID="baltazar" />)} />
-          <Route path="/vacationsRequests/:currentUserID/:ID" component={VacationsRequestDetails} />
+          <Route path="/vacationsRequests/:userID/:vacationsRequestID" component={VacationsRequestDetails} />
 
         </div>
       </Router>

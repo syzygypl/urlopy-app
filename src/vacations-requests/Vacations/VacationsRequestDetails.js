@@ -37,20 +37,20 @@ const VacationsRequestDetails = ({ match, firebase, vacationsRequest }) => {
 
           <VacationsRequestsStatus
             vacationsRequest={vacationsRequest}
-            vacationsRequestID={match.params.ID}
-            currentUserID={match.params.currentUserID}
+            vacationsRequestID={match.params.vacationsRequestID}
+            currentUserID={match.params.userID}
             doAfterPrompt={decideAfterPrompt}
           />
 
-          <Vacations vacationsRequestsID={match.params.ID} />
+          <Vacations vacationsRequestsID={match.params.vacationsRequestID} />
 
         </Col>
 
         <Col xs={6}>
 
           <Comments
-            currentUserID={match.params.currentUserID}
-            vacationsRequestsID={match.params.ID}
+            currentUserID={match.params.userID}
+            vacationsRequestsID={match.params.vacationsRequestID}
           />
 
         </Col>
@@ -71,12 +71,12 @@ VacationsRequestDetails.propTypes = {
 export default compose(
   firebaseConnect(({ match }) => (
     [
-      `/vacationsRequests/${match.params.currentUserID}/${match.params.ID}`,
+      `/vacationsRequests/${match.params.userID}/${match.params.vacationsRequestID}`,
     ]
   )),
   connect(
     ({ firebase }, { match }) => ({
-      vacationsRequest: dataToJS(firebase, `vacationsRequests/${match.params.currentUserID}/${match.params.ID}`) || {},
+      vacationsRequest: dataToJS(firebase, `vacationsRequests/${match.params.userID}/${match.params.vacationsRequestID}`) || {},
     }),
   ),
 )(VacationsRequestDetails);
