@@ -10,7 +10,7 @@ import Column from './Column';
 
 const getInitialRows = ({ vacationsRequests, vacations, users }) => {
   const toLoad = [vacationsRequests, vacations, users];
-  const isDataLoaded = toLoad.filter(isLoaded).length === toLoad.length;
+  const isDataLoaded = toLoad.filter(R.identity).filter(isLoaded).length === toLoad.length;
 
   return !isDataLoaded
     ? []
@@ -19,7 +19,11 @@ const getInitialRows = ({ vacationsRequests, vacations, users }) => {
       .map((vrID) => {
         const vacationsPerRequest = vacations[vrID];
 
-        const vacReqData = Object.values(vacationsRequests).map(vr => vr[vrID]).filter(d => d)[0];
+        const vacReqData = Object
+          .values(vacationsRequests)
+          .filter(R.identity)
+          .map(vr => vr[vrID])
+          .filter(R.identity)[0];
 
         const user = users[vacReqData.vacationerID];
         const vacationsIDs = Object.keys(vacationsPerRequest);
