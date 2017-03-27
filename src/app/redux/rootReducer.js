@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import { firebaseStateReducer } from 'react-redux-firebase';
 import { reducer as formReducer } from 'redux-form';
+import { firebaseStateReducer } from 'react-redux-firebase';
+
+import auth from '../../log-in-page/authReducer';
 import rowsReducer from '../../vacations-requests/Vacations/rowsReducer';
 
 const rootReducer = combineReducers({
@@ -8,6 +10,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   sortRowsBy: rowsReducer,
   currentUserID: () => 'sancho',
+  auth,
 });
 
 export default rootReducer;
