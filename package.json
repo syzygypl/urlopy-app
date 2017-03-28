@@ -9,6 +9,7 @@
     "express": "^4.15.2",
     "ldapjs": "^1.0.1",
     "material-ui": "0.17.1",
+    "njwt": "^0.4.0",
     "ramda": "^0.23.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -21,7 +22,8 @@
     "redux-devtools-extension": "^2.13.0",
     "redux-form": "^6.5.0",
     "redux-form-material-ui": "^4.1.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "secure-random": "^1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

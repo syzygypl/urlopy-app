@@ -10,8 +10,11 @@ const states = {
   },
 };
 
-const reducer =
-  (possibleStates, state = notAuthenticated, action) =>
-  possibleStates[action.type] || state;
+const reducer = (possibleStates, state = notAuthenticated, action) => {
+  const possibleState = possibleStates[action.type];
+  const addToken = existingState => Object.assign({}, existingState, { token: action.payload });
+
+  return possibleState ? addToken(possibleState) : state;
+};
 
 export default reducer.bind(null, states);

@@ -7,7 +7,7 @@ import axios from 'axios';
 
 import Log from './LogInForm';
 
-const LogInPage = ({ username, password, logIn, auth }) => {
+const LogInPage = ({ username, password, logIn, auth, getSomeSecretData }) => {
   const onSubmit = (evt) => {
     evt.preventDefault();
 
@@ -19,10 +19,18 @@ const LogInPage = ({ username, password, logIn, auth }) => {
       <Row center="xs">
 
         <Col>
-          {auth.isAuthenticated ? 'zalogowano' : <Log onSubmit={onSubmit} notAuthReason={auth.reason} />}
+          {
+            auth.isAuthenticated
+              ? 'zalogowano'
+              : <Row center="xs"><Log onSubmit={onSubmit} notAuthReason={auth.reason} /></Row>
+          }
         </Col>
 
       </Row>
+      <Row center="xs">
+        <button onClick={() => getSomeSecretData(auth.token)}>get some secret!</button>
+      </Row>
+
     </Grid>
   );
 };
@@ -36,6 +44,7 @@ LogInPage.propTypes = {
   auth: PropTypes.shape({
     isAuthenticated: PropTypes.bool.isRequired,
   }).isRequired,
+  getSomeSecretData: PropTypes.func.isRequired,
   username: PropTypes.string,
   password: PropTypes.string,
   logIn: PropTypes.func.isRequired,
@@ -48,6 +57,13 @@ export default connect(
     password: formValueSelector('login')(state, 'password'),
   }),
   dispatch => ({
+    getSomeSecretData(token) {
+      return axios
+        .post('/someSecretIsKeptHere', { token })
+        .then(res => alert(res.data))
+        .catch(res => alert(res));
+    },
+
     logIn(username, password) {
       dispatch({ type: 'LOGGING_IN' });
 
@@ -56,7 +72,7 @@ export default connect(
           username,
           password,
         })
-        .then(() => dispatch({ type: 'LOGGING_IN_SUCCESS' }))
+        .then(res => dispatch({ type: 'LOGGING_IN_SUCCESS', payload: res.data }))
         .catch(() => dispatch({ type: 'LOGGING_IN_ERROR' }));
     },
   }),
