@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { red500 } from 'material-ui/styles/colors';
 
-const LogInPage = ({ onSubmit, notAuthReason }) => (
+const LogInPage = ({ onSubmit, info }) => (
   <form onSubmit={onSubmit}>
     <Grid fluid>
 
@@ -54,7 +54,7 @@ const LogInPage = ({ onSubmit, notAuthReason }) => (
 
       <Row center="xs">
         <Col style={{ color: red500, padding: 6}}>
-          { notAuthReason }
+          { info }
         </Col>
       </Row>
 
@@ -63,11 +63,11 @@ const LogInPage = ({ onSubmit, notAuthReason }) => (
 );
 
 LogInPage.defaultProps = {
-  notAuthReason: '',
+  info: '',
 };
 
 LogInPage.propTypes = {
-  notAuthReason: PropTypes.string,
+  info: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
 };
 

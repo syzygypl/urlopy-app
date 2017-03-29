@@ -1,20 +1,9 @@
-const notAuthenticated = {
-  isAuthenticated: false,
-};
-
 const states = {
-  LOGGING_IN: notAuthenticated,
-  LOGGING_IN_ERROR: Object.assign({}, notAuthenticated, { reason: 'Nazwa użytkownika lub hasło nieprawidłowe' }),
-  LOGGING_IN_SUCCESS: {
-    isAuthenticated: true,
-  },
+  LOGGING_IN: { info: 'Trwa logowanie...' },
+  LOGGING_IN_ERROR: { info: 'Nazwa użytkownika lub hasło nieprawidłowe' },
+  LOGGING_IN_SUCCESS: {},
 };
 
-const reducer = (possibleStates, state = notAuthenticated, action) => {
-  const possibleState = possibleStates[action.type];
-  const addToken = existingState => Object.assign({}, existingState, { token: action.payload });
-
-  return possibleState ? addToken(possibleState) : state;
-};
+const reducer = (possibleStates, state = {}, action) => possibleStates[action.type] || state;
 
 export default reducer.bind(null, states);

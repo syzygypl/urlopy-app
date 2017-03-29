@@ -1,17 +1,19 @@
+import axios from 'axios';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 import { formValueSelector } from 'redux-form';
+import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import { firebase as withFirebase, pathToJS } from 'react-redux-firebase';
 
-import axios from 'axios';
+import LogInForm from './LogInForm';
 
-import Log from './LogInForm';
-
-const LogInPage = ({ username, password, logIn, auth, getSomeSecretData }) => {
+const LogInPage = ({ fireAuth, firebase, username, password, logIn, auth }) => {
   const onSubmit = (evt) => {
     evt.preventDefault();
 
-    logIn(username, password);
+    logIn(username, password, firebase);
   };
 
   return (
@@ -19,17 +21,17 @@ const LogInPage = ({ username, password, logIn, auth, getSomeSecretData }) => {
       <Row center="xs">
 
         <Col>
-          {
-            auth.isAuthenticated
-              ? 'zalogowano'
-              : <Row center="xs"><Log onSubmit={onSubmit} notAuthReason={auth.reason} /></Row>
-          }
+          <Row center="xs">
+            {
+              fireAuth
+                ? <RaisedButton label="Wyloguj" onClick={() => firebase.logout()} />
+                : <LogInForm onSubmit={onSubmit} info={auth.info} />
+            }
+          </Row>
         </Col>
 
       </Row>
-      <Row center="xs">
-        <button onClick={() => getSomeSecretData(auth.token)}>get some secret!</button>
-      </Row>
+
 
     </Grid>
   );
@@ -38,42 +40,38 @@ const LogInPage = ({ username, password, logIn, auth, getSomeSecretData }) => {
 LogInPage.defaultProps = {
   username: '',
   password: '',
+  fireAuth: null,
 };
 
 LogInPage.propTypes = {
-  auth: PropTypes.shape({
-    isAuthenticated: PropTypes.bool.isRequired,
-  }).isRequired,
-  getSomeSecretData: PropTypes.func.isRequired,
+  auth: PropTypes.shape({}).isRequired,
   username: PropTypes.string,
   password: PropTypes.string,
   logIn: PropTypes.func.isRequired,
+  firebase: PropTypes.shape({
+    auth: PropTypes.func.isRequired,
+  }).isRequired,
+  fireAuth: PropTypes.shape({}),
 };
 
-export default connect(
-  state => ({
-    auth: state.auth,
-    username: formValueSelector('login')(state, 'username'),
-    password: formValueSelector('login')(state, 'password'),
-  }),
-  dispatch => ({
-    getSomeSecretData(token) {
-      return axios
-        .post('/someSecretIsKeptHere', { token })
-        .then(res => alert(res.data))
-        .catch(res => alert(res));
-    },
+export default compose(
+  withFirebase(),
+  connect(
+    state => ({
+      fireAuth: pathToJS(state.firebase, 'auth'),
+      auth: state.auth,
+      username: formValueSelector('login')(state, 'username'),
+      password: formValueSelector('login')(state, 'password'),
+    }),
+    dispatch => ({
+      logIn(username, password, firebase) {
+        dispatch({ type: 'LOGGING_IN' });
 
-    logIn(username, password) {
-      dispatch({ type: 'LOGGING_IN' });
-
-      return axios
-        .post('/login', {
-          username,
-          password,
-        })
-        .then(res => dispatch({ type: 'LOGGING_IN_SUCCESS', payload: res.data }))
-        .catch(() => dispatch({ type: 'LOGGING_IN_ERROR' }));
-    },
-  }),
+        return axios
+          .post('/login', { username, password })
+          .then(res => firebase.auth().signInWithCustomToken(res.data))
+          .then(() => dispatch({ type: 'LOGGING_IN_SUCCESS' }))
+          .catch(() => dispatch({ type: 'LOGGING_IN_ERROR' }));
+      },
+    })),
 )(LogInPage);
