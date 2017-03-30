@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 
 import Menu from './app/Menu';
 import VacationsRequests from './vacations-requests/';
@@ -13,14 +14,16 @@ import LogInPage from './log-in-page';
 
 import './index.css';
 
-import store from './app/redux/store';
+import store, { history } from './app/redux/store';
+
+import SubmitVacation from './submit-vacation/SubmitVacation';
 
 injectTapEventPlugin();
 
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <Router>
+      <ConnectedRouter history={history}>
         <div>
           <Menu />
 
@@ -32,9 +35,10 @@ ReactDOM.render(
 
           <Route exact path="/vacationsRequests/" component={() => (<VacationsRequests />)} />
           <Route path="/vacationsRequests/:userID/:vacationsRequestID" component={VacationsRequestDetails} />
+          <Route path="/vacations/submit" component={SubmitVacation} />
 
         </div>
-      </Router>
+      </ConnectedRouter>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root'),

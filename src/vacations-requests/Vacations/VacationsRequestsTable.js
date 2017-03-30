@@ -38,8 +38,8 @@ const getInitialRows = ({ vacationsRequests, vacations, users }) => {
           vrID,
           userName: user.name,
           status: statuses[vacReqData.status],
-          endDate: vacationsList.map(R.prop('endDate')).reduce(R.max),
-          startDate: vacationsList.map(R.prop('startDate')).reduce(R.min),
+          endDate: vacationsList.map(R.prop('to')).reduce(R.max),
+          startDate: vacationsList.map(R.prop('from')).reduce(R.min),
           totalWorkDays: vacationsList.map(R.prop('workDays')).reduce(R.add, 0),
         };
       });
@@ -78,7 +78,7 @@ const VacationsRequestsTableShell = ({ rows }, context) => {
                 <TableRowColumn>{userName}</TableRowColumn>
                 <TableRowColumn>{status}</TableRowColumn>
                 <TableRowColumn>{totalWorkDays}</TableRowColumn>
-                <TableRowColumn>{`${startDateObj.toDateString()} ${startDateObj.toTimeString()}`}</TableRowColumn>
+                <TableRowColumn>{startDate}</TableRowColumn>
               </TableRow>
             );
           })

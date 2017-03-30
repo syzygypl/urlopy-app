@@ -1,14 +1,7 @@
 const ldap = require('ldapjs');
-const admin = require('firebase-admin');
 const router = require('express').Router();
 
-const serviceAccount = require('../../urlopy-app-firebase-adminsdk.json');
-
-const fire = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
-});
-
+const fire = require('../firebase');
 const createDN = require('./createDN');
 const connectToLDAP = require('./connectToLDAP');
 
