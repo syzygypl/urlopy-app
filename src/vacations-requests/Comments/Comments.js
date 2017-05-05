@@ -9,23 +9,25 @@ import ViewComment from './ViewComment';
 
 import * as props from '../props';
 
-function Comments({
+const Comments = ({
   users,
-  currentUserID,
   addComment,
   comments,
   vacationsRequestsID,
   commentBody,
+  firebase,
   deleteComment,
-}) {
+}) => {
+  const authorID = firebase.auth().currentUser.uid;
+
   return (
     <div>
       <AddComment
         hasBody={!!commentBody}
-        author={users[currentUserID]}
+        author={{ name: authorID }}
         handleSubmit={(evt) => {
           evt.preventDefault();
-          addComment(currentUserID, commentBody, vacationsRequestsID);
+          addComment(authorID, commentBody, vacationsRequestsID);
         }}
       />
 
@@ -49,7 +51,7 @@ function Comments({
 
     </div>
   );
-}
+};
 
 Comments.defaultProps = {
   comments: {},
@@ -60,9 +62,9 @@ Comments.defaultProps = {
 Comments.propTypes = {
   users: props.users,
   comments: props.comments,
+  firebase: props.firebase.isRequired,
   commentBody: props.commentBody,
   addComment: PropTypes.func.isRequired,
-  currentUserID: props.userID.isRequired,
   deleteComment: PropTypes.func.isRequired,
   vacationsRequestsID: props.vacationsRequestsID.isRequired,
 };
@@ -76,7 +78,6 @@ export default compose(
   )),
   connect(
     (state, ownProps) => ({
-      currentUserID: state.currentUserID,
       users: dataToJS(state.firebase, 'users') || {},
       commentBody: formValueSelector('addComment')(state, 'newCommentBody'),
       comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`) || {},

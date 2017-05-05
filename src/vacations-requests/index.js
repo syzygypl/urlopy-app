@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebaseConnect } from 'react-redux-firebase';
 
+import * as props from './props';
+
 import VacationsRequestsTable from './Vacations/VacationsRequestsTable';
 
-const VacationsRequests = ({ addUsers, currentUserID, addVacationsRequest }) => (
+const VacationsRequests = ({ addUsers, addVacationsRequest, firebase }) => (
   <Grid fluid>
 
     <Row >
 
-      <button onClick={() => addVacationsRequest(currentUserID)}>
+      <button onClick={() => addVacationsRequest(firebase.auth().currentUser.uid)}>
         add vac
       </button>
 
@@ -35,8 +37,8 @@ VacationsRequests.defaultProps = {
 };
 
 VacationsRequests.propTypes = {
+  firebase: props.firebase.isRequired,
   addUsers: PropTypes.func.isRequired,
-  currentUserID: PropTypes.string.isRequired,
   addVacationsRequest: PropTypes.func.isRequired,
 };
 
@@ -52,22 +54,20 @@ export default compose(
         ({
           addUsers() {
             return Promise.all([
-              ownProps.firebase.set('/users/sancho', { name: 'Sancho Panza', mail: 'sancho@panza.pl' }),
-              ownProps.firebase.set('/users/baltazar', { name: 'Baltazar Gąbka', mail: 'baltazar@gabka.pl' }),
-              ownProps.firebase.set('/users/sandman', { name: 'Sandman', mail: 'mr@sandman.pl' }),
+              ownProps.firebase.set('/users/Mateusz_Wit', { name: 'Mateusz Wit', mail: 'm@w.pl' }),
+              ownProps.firebase.set('/users/Adam_Nowak', { name: 'Adam Nowak', mail: 'a@n.pl' }),
             ]);
           },
           addVacationsRequest(ID) {
             const addVacation = vacationsRequestID => ownProps.firebase.push(`/vacations/${vacationsRequestID}`, {
-              startDate: Date.now(),
-              endDate: Date.now(),
-              addedDate: Date.now(),
-              modifiedDate: Date.now(),
+              to: Date.now(),
+              from: Date.now(),
               workDays: 4,
             });
 
             return ownProps.firebase
               .push(`/vacationsRequests/${ID}`, {
+                notifyUser: 'Adam_Nowak',
                 vacationerID: ID,
                 status: 'accepted',
               })

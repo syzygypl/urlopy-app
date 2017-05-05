@@ -14,13 +14,13 @@ import statuses from '../../app/helpers/statuses';
 const VacationsRequestsStatus = ({
   vacationsRequest,
   vacationsRequestID,
-  currentUserID,
+  userID,
   doAfterPrompt,
 }) => {
   const rejectButton = (
     <RaisedButton
       label="odrzuć"
-      onClick={() => doAfterPrompt(vacationsRequest, 'rejected', currentUserID, vacationsRequestID)}
+      onClick={() => doAfterPrompt(vacationsRequest, 'rejected', userID, vacationsRequestID)}
       backgroundColor={lightBlue200}
       icon={<ClearIcon />}
     />
@@ -29,7 +29,7 @@ const VacationsRequestsStatus = ({
   const acceptButton = (
     <RaisedButton
       label="akceptuj"
-      onClick={() => doAfterPrompt(vacationsRequest, 'accepted', currentUserID, vacationsRequestID)}
+      onClick={() => doAfterPrompt(vacationsRequest, 'accepted', userID, vacationsRequestID)}
       icon={<DoneIcon />}
     />
   );
@@ -65,7 +65,7 @@ VacationsRequestsStatus.propTypes = {
   doAfterPrompt: PropTypes.func.isRequired,
   vacationsRequest: props.vacationsRequest.isRequired,
   vacationsRequestID: PropTypes.string.isRequired,
-  currentUserID: PropTypes.string.isRequired,
+  userID: PropTypes.string.isRequired,
 };
 
 export default VacationsRequestsStatus;

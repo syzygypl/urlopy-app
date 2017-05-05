@@ -10,7 +10,6 @@ const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
   form: formReducer,
   sortRowsBy: rowsReducer,
-  currentUserID: () => 'u-0',
   auth,
   routing: routerReducer,
 });

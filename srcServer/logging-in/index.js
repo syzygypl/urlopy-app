@@ -19,7 +19,7 @@ router.post('/login', (req, res) => {
   connectToLDAP(ldapClient, dn, req.body.password)
     .then(({ client }) => fire
       .auth()
-      .createCustomToken(req.body.username, claims)
+      .createCustomToken(req.body.username.replace(' ', '_'), claims)
       .then(customToken => res.status(200).send(customToken))
       .catch(error => console.log('Error creating custom token:', error))
       .then(() => client),

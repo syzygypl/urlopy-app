@@ -21,7 +21,7 @@ const VacationsRequestDetails = ({ match, decideAfterPrompt, vacationsRequest })
         <VacationsRequestsStatus
           vacationsRequest={vacationsRequest}
           vacationsRequestID={match.params.vacationsRequestID}
-          currentUserID={match.params.userID}
+          userID={match.params.userID}
           doAfterPrompt={decideAfterPrompt}
         />
 
