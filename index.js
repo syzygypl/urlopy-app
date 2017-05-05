@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const { port } = require('./config');
+
+const usersRouter = require('./srcServer/users');
 const loggingInRouter = require('./srcServer/logging-in');
 
 const firebase = require('./srcServer/firebase');
@@ -22,6 +24,7 @@ function getRandomInt(min, max) {
 app.use(bodyParser.json());
 
 app.use(loggingInRouter);
+app.use(usersRouter);
 
 app.use(express.static(`${__dirname}/build`));
 
