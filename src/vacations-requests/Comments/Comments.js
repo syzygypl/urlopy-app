@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+import { firebaseConnect, dataToJS, toJS } from 'react-redux-firebase';
 
 import AddComment from './AddComment';
 import ViewComment from './ViewComment';
@@ -12,6 +12,7 @@ import * as props from '../props';
 const Comments = ({
   users,
   addComment,
+  currentUser,
   comments,
   vacationsRequestsID,
   commentBody,
@@ -24,7 +25,7 @@ const Comments = ({
     <div>
       <AddComment
         hasBody={!!commentBody}
-        author={{ name: authorID }}
+        author={{ name: currentUser.name }}
         handleSubmit={(evt) => {
           evt.preventDefault();
           addComment(authorID, commentBody, vacationsRequestsID);
@@ -57,10 +58,15 @@ Comments.defaultProps = {
   comments: {},
   users: {},
   commentBody: '',
+  currentUser: {
+    name: '',
+    mail: '',
+  },
 };
 
 Comments.propTypes = {
   users: props.users,
+  currentUser: props.user,
   comments: props.comments,
   firebase: props.firebase.isRequired,
   commentBody: props.commentBody,
@@ -78,6 +84,7 @@ export default compose(
   )),
   connect(
     (state, ownProps) => ({
+      currentUser: toJS(state.firebase).profile,
       users: dataToJS(state.firebase, 'users') || {},
       commentBody: formValueSelector('addComment')(state, 'newCommentBody'),
       comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`) || {},
