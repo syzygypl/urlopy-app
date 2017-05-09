@@ -1,6 +1,8 @@
 // load env variables from .env
 require('dotenv').config();
 
+const populateFireWithUsers = require('./srcServer/users/populateFireWithUsers');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -14,21 +16,20 @@ const loggingInRouter = require('./srcServer/logging-in');
 const firebase = require('./srcServer/firebase');
 
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
+app.use(loggingInRouter);
+app.use(usersRouter);
+app.use(express.static(`${__dirname}/build`));
+
+app.listen(port, () => console.log('Up and running...'));
+
+populateFireWithUsers();
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-app.use(bodyParser.json());
-
-app.use(loggingInRouter);
-app.use(usersRouter);
-
-app.use(express.static(`${__dirname}/build`));
-
-app.listen(port, () => console.log('Up and running...'));
 
 function createErrorResponse(msg) {
   return {
