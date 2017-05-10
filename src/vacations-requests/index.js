@@ -8,17 +8,13 @@ import * as props from './props';
 
 import VacationsRequestsTable from './Vacations/VacationsRequestsTable';
 
-const VacationsRequests = ({ addUsers, addVacationsRequest, firebase }) => (
+const VacationsRequests = ({ addVacationsRequest, firebase }) => (
   <Grid fluid>
 
-    <Row >
+    <Row>
 
       <button onClick={() => addVacationsRequest(firebase.auth().currentUser.uid)}>
         add vac
-      </button>
-
-      <button onClick={addUsers}>
-        add users
       </button>
 
     </Row>
@@ -38,7 +34,6 @@ VacationsRequests.defaultProps = {
 
 VacationsRequests.propTypes = {
   firebase: props.firebase.isRequired,
-  addUsers: PropTypes.func.isRequired,
   addVacationsRequest: PropTypes.func.isRequired,
 };
 
@@ -52,12 +47,6 @@ export default compose(
     ({ currentUserID }) => ({ currentUserID }),
     ((dispatch, ownProps) =>
         ({
-          addUsers() {
-            return Promise.all([
-              ownProps.firebase.set('/users/Mateusz_Wit', { name: 'Mateusz Wit', mail: 'm@w.pl' }),
-              ownProps.firebase.set('/users/Adam_Nowak', { name: 'Adam Nowak', mail: 'a@n.pl' }),
-            ]);
-          },
           addVacationsRequest(ID) {
             const addVacation = vacationsRequestID => ownProps.firebase.push(`/vacations/${vacationsRequestID}`, {
               to: Date.now(),
