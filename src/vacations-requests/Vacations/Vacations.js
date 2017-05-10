@@ -3,9 +3,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+import Paper from 'material-ui/Paper';
 
 import Vacation from './Vacation';
-
 import * as props from '../props';
 
 const Vacations = ({ vacations }) => (
@@ -14,18 +14,24 @@ const Vacations = ({ vacations }) => (
     <Row>
       <Col xs={12} md={12}>
 
-        <ul>
+        <ul style={{ listStyle: 'none', padding: 0 }}>
           {
             Object
               .keys(vacations)
               .map(vacationID => (
-                <li
-                  key={vacationID}
-                  style={{ border: '1px solid black', margin: 6, padding: 6 }}
-                >
-                  <Vacation
-                    vacation={vacations[vacationID]}
-                  />
+
+                <li key={vacationID}>
+                  <Paper
+                    style={{
+                      margin: 20,
+                      padding: 10,
+                    }}
+                    zDepth={1}
+                  >
+
+                    <Vacation vacation={vacations[vacationID]} />
+
+                  </Paper>
                 </li>
               ))
           }
