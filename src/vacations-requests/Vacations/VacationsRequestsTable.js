@@ -1,11 +1,11 @@
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
-import { firebaseConnect, dataToJS, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect, dataToJS } from 'react-redux-firebase';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-
 import R from 'ramda';
 
+import isDataLoaded from '../../app/helpers/isDataLoaded';
 import statuses from '../../app/helpers/statuses';
 
 import Column from './Column';
@@ -119,10 +119,7 @@ export default compose(
       const vacations = dataToJS(firebase, 'vacations');
       const users = dataToJS(firebase, 'users');
 
-      const toLoad = [vacationsRequests, vacations, users];
-      const isDataLoaded = toLoad.filter(R.identity).filter(isLoaded).length === toLoad.length;
-
-      const rowsData = isDataLoaded
+      const rowsData = isDataLoaded([vacationsRequests, vacations, users])
         ? getInitialRows({
           vacationsRequests: R.dissoc('undefined', vacationsRequests),
           vacations,
