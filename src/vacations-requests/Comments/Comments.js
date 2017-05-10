@@ -61,8 +61,8 @@ Comments.defaultProps = {
     name: '',
     mail: '',
   },
-  users: null,
-  comments: null,
+  users: undefined,
+  comments: undefined,
 };
 
 Comments.propTypes = {
