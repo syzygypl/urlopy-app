@@ -3,6 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import { firebaseConnect, dataToJS, toJS } from 'react-redux-firebase';
+import isDataLoaded from '../../app/helpers/isDataLoaded';
 
 import AddComment from './AddComment';
 import ViewComment from './ViewComment';
@@ -18,50 +19,50 @@ const Comments = ({
   commentBody,
   firebase,
   deleteComment,
-}) => {
-  const authorID = firebase.auth().currentUser.uid;
+}) => (
+  !isDataLoaded([users, comments])
+    ? null
+    : (
+      <div>
+        <AddComment
+          hasBody={!!commentBody}
+          author={{ name: currentUser.name }}
+          handleSubmit={(evt) => {
+            evt.preventDefault();
+            addComment(firebase.auth().currentUser.uid, commentBody, vacationsRequestsID);
+          }}
+        />
 
-  return (
-    <div>
-      <AddComment
-        hasBody={!!commentBody}
-        author={{ name: currentUser.name }}
-        handleSubmit={(evt) => {
-          evt.preventDefault();
-          addComment(authorID, commentBody, vacationsRequestsID);
-        }}
-      />
+        <ul style={{ listStyle: 'none' }}>
+          {Object
+            .keys(comments || {})
+            .map((commentID) => {
+              const comment = comments[commentID];
 
-      <ul style={{ listStyle: 'none' }}>
-        {Object
-          .keys(comments)
-          .map((commentID) => {
-            const comment = comments[commentID];
+              return (
+                <li style={{ margin: 4 }} key={commentID}>
+                  <ViewComment
+                    handleCommentDeletion={() => deleteComment(vacationsRequestsID, commentID)}
+                    author={users[comment.authorID]}
+                    comment={comment}
+                  />
+                </li>
+              );
+            })}
+        </ul>
 
-            return (
-              <li style={{ margin: 4 }} key={commentID}>
-                <ViewComment
-                  handleCommentDeletion={() => deleteComment(vacationsRequestsID, commentID)}
-                  author={users[comment.authorID]}
-                  comment={comment}
-                />
-              </li>
-            );
-          })}
-      </ul>
-
-    </div>
-  );
-};
+      </div>
+    )
+);
 
 Comments.defaultProps = {
-  comments: {},
-  users: {},
   commentBody: '',
   currentUser: {
     name: '',
     mail: '',
   },
+  users: null,
+  comments: null,
 };
 
 Comments.propTypes = {
@@ -85,9 +86,9 @@ export default compose(
   connect(
     (state, ownProps) => ({
       currentUser: toJS(state.firebase).profile,
-      users: dataToJS(state.firebase, 'users') || {},
+      users: dataToJS(state.firebase, 'users'),
       commentBody: formValueSelector('addComment')(state, 'newCommentBody'),
-      comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`) || {},
+      comments: dataToJS(state.firebase, `comments/${ownProps.vacationsRequestsID}`),
     }),
     (dispatch, { firebase }) => ({
       addComment(currentUserID, body, givenVacationsRequestsID) {
