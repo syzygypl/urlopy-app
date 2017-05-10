@@ -1,8 +1,7 @@
+const R = require('ramda');
 const axios = require('axios');
 
-const firebase = require('../firebase');
-
-const db = firebase.database();
+const db = require('../firebase').database();
 
 module.exports = () =>
   axios.get('http://localhost:4000/users')
@@ -10,8 +9,14 @@ module.exports = () =>
       db
         .ref()
         .update({
-          users: response.data.reduce((a, b) =>
-            Object.assign({}, a, { [b.cn.replace(' ', '_')]: b }), {}),
+          users: response.data.reduce((prevUsers, nextUser) => {
+            const withName = R.merge(nextUser, { name: nextUser.cn });
+
+            return R.merge(
+              prevUsers,
+              { [nextUser.cn.replace(' ', '_')]: withName },
+            );
+          }, {}),
         }),
     )
     .catch(error => console.log(error));
