@@ -26,7 +26,7 @@ const Comment = ({ author, body, addedDate, actionButton }) => (
 
       </Col>
 
-      <Col xs={6}>
+      <Col xs={10}>
 
         <Row>
 
