@@ -1,35 +1,36 @@
-const ldap = require('ldapjs');
 const router = require('express').Router();
+const ldapLib = require('ldapjs');
 
-const fire = require('../firebase');
-const createDN = require('./createDN');
-const connectToLDAP = require('./connectToLDAP');
+const bindToLDAP = require('./bindToLDAP');
+const getFireToken = require('./getFireToken');
+const getEntryDataFromLDAP = require('./getEntryDataFromLDAP');
 
-const claims = {
-  scope: 'self, admins',
-};
+const noAuth = (res, e) => res.status(401).send(e);
 
-router.post('/login', (req, res) => {
-  const dn = createDN(req.body.username);
-
+const loginHandler = (ldap, req, res) => {
   const ldapClient = ldap.createClient({
     url: process.env.LDAP_URL,
   });
 
-  connectToLDAP(ldapClient, dn, req.body.password)
-    .then(({ client }) => fire
-      .auth()
-      .createCustomToken(req.body.username.replace(' ', '_'), claims)
-      .then(customToken => res.status(200).send(customToken))
-      .catch(error => console.log('Error creating custom token:', error))
-      .then(() => client),
-    )
-    .catch(({ client }) => {
-      res.status(401).send(false);
+  const username = req.body.username;
 
-      return client;
-    })
-    .then(client => client.unbind());
-});
+  const opts = {
+    filter: `(|(uid=${username})(mail=${username}))`,
+    scope: 'sub',
+  };
+
+  getEntryDataFromLDAP(ldapClient, opts)
+    .then(entry => bindToLDAP(ldapClient, entry.dn, req.body.password))
+    .catch(e => noAuth(res, e))
+    .then(ldapConnection =>
+      getFireToken(username)
+        .then(customToken => res.status(200).send(customToken))
+        .then(() => ldapConnection),
+    )
+    .then(({ client }) => client.unbind())
+    .catch(e => noAuth(res, e));
+};
+
+router.post('/login', loginHandler.bind(null, ldapLib));
 
 module.exports = router;

@@ -14,7 +14,7 @@ module.exports = () =>
 
             return R.merge(
               prevUsers,
-              { [nextUser.cn.replace(' ', '_')]: withName },
+              { [nextUser.uid.replace('.', '_')]: withName },
             );
           }, {}),
         }),
