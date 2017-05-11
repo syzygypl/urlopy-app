@@ -42,6 +42,7 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
     "flow-bin": "^0.41.0",
+    "flow-typed": "^2.1.2",
     "nodemon": "^1.11.0",
     "postcss-cli": "^3.0.0-beta",
     "postcss-scss": "^0.4.1",
@@ -53,6 +54,7 @@
   "proxy": "http://localhost:4000",
   "scripts": {
     "flow": "flow",
+    "flow-typed": "flow-typed install",
     "build:css": "postcss src/*.scss src/**/*.scss -r -x css",
     "build:css:watch": "yarn run build:css -- -w",
     "start:server:watch": "nodemon --harmony_trailing_commas index.js",
