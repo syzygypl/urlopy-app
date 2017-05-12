@@ -33,21 +33,26 @@ const getUser = (vacReqData, users, vrID, vacationsPerRequest) => {
   }
 };
 
-const getInitialRows = ({ vacationsRequests, vacations, users }) =>
-  Object
-    .keys(vacations)
-    .map((vrID) => {
-      const vacationsPerRequest = vacations[vrID];
+const getInitialRows = (data) => {
+  const { vacationsRequests, vacations, users } = data;
 
-      const vacReqData = Object
-        .values(vacationsRequests)
-        .filter(R.identity)
-        .map(vr => vr[vrID])
-        .filter(R.identity)[0];
+  return (R.any(R.isNil, [vacationsRequests, vacations, users]))
+    ? []
+    : Object
+      .keys(vacations)
+      .map((vrID) => {
+        const vacationsPerRequest = vacations[vrID];
 
-      return getUser(vacReqData, users, vrID, vacationsPerRequest);
-    })
-    .filter(a => !R.isNil(a));
+        const vacReqData = Object
+          .values(vacationsRequests)
+          .filter(R.identity)
+          .map(vr => vr[vrID])
+          .filter(R.identity)[0];
+
+        return getUser(vacReqData, users, vrID, vacationsPerRequest);
+      })
+      .filter(a => !R.isNil(a));
+};
 
 const VacationsRequestsTableShell = ({ rows }, context) => {
   const notEmptyRows = rows.filter(row => !R.isEmpty(row));
