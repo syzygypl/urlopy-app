@@ -1,19 +1,17 @@
 // load env variables from .env
 require('dotenv').config();
 
-const populateFireWithUsers = require('./srcServer/users/populateFireWithUsers');
-
+const fs = require('fs');
+const cors = require('cors');
+const https = require('https');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const cors = require('cors');
-
 const { port } = require('./config');
-
 const usersRouter = require('./srcServer/users');
-const loggingInRouter = require('./srcServer/logging-in');
-
 const firebase = require('./srcServer/firebase');
+const loggingInRouter = require('./srcServer/logging-in');
+const populateFireWithUsers = require('./srcServer/users/populateFireWithUsers');
 
 const app = express();
 
@@ -23,7 +21,18 @@ app.use(loggingInRouter);
 app.use(usersRouter);
 app.use(express.static(`${__dirname}/build`));
 
-app.listen(port, () => console.log('Up and running...'));
+https
+  .createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+  }, app)
+  .on('error', (err) => {
+    console.log('error', err);
+  })
+  .on('clientError', (err) => {
+    console.log('clientError', err);
+  })
+  .listen(port, () => console.log('Up and running...'));
 
 populateFireWithUsers();
 
@@ -138,4 +147,4 @@ app.post('/vacations/', (req, res) => {
 // to be subtracted from vacation pool
 app.get('/vacations/work_days', (req, res) => {
   res.send(String(getRandomInt(1, 20)));
-})
+});
