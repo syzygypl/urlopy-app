@@ -39,7 +39,7 @@ const getUsersHandler = (ldapClient, req, res) => {
   ldapClient.search(
     'o=ArsThanea,dc=arsthanea,dc=com',
     opts,
-    (err, response) => collectUsers(err, response).then(res.send.bind.res),
+    (err, ldapRes) => collectUsers(err, ldapRes).then(res.send.bind(res)),
   );
 };
 

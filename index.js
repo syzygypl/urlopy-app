@@ -32,9 +32,11 @@ https
   .on('clientError', (err) => {
     console.log('clientError', err);
   })
-  .listen(port, () => console.log('Up and running...'));
+  .listen(port, () => {
+    console.log('Up and running...');
 
-populateFireWithUsers();
+    populateFireWithUsers();
+  });
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
