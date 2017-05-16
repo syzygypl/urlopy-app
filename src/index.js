@@ -27,15 +27,15 @@ ReactDOM.render(
         <div>
           <Menu />
 
-          <hr />
+          <div className="page-content">
+            <Route exact path="/" component={() => (<div>home</div>)} />
 
-          <Route exact path="/" component={() => (<div>home</div>)} />
+            <Route path="/login" component={LogInPage} />
 
-          <Route path="/login" component={LogInPage} />
-
-          <Route exact path="/vacationsRequests/" component={() => (<VacationsRequests />)} />
-          <Route path="/vacationsRequests/:userID/:vacationsRequestID" component={VacationsRequestDetails} />
-          <Route path="/vacations/submit" component={SubmitVacation} />
+            <Route exact path="/vacationsRequests/" component={() => (<VacationsRequests />)} />
+            <Route path="/vacationsRequests/:userID/:vacationsRequestID" component={VacationsRequestDetails} />
+            <Route path="/vacations/submit" component={SubmitVacation} />
+          </div>
 
         </div>
       </ConnectedRouter>
