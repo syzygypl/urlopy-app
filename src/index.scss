@@ -3,3 +3,14 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.page-wrapper > [data-reactroot] {
+  display: flex;
+}
+
+.page-content {
+  margin-top: 100px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
