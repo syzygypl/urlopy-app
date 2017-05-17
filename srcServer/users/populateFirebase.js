@@ -4,10 +4,10 @@ const config = require('./../../config');
 
 const db = require('../firebase').database();
 
-module.exports = () =>
-  axios.get(`${config.proxyAddress}/users`)
+module.exports = field =>
+  axios.get(`${config.proxyAddress}/${field}`)
     .then(response =>
       db
         .ref()
-        .update({ users: response.data }))
+        .update({ [field]: response.data }))
     .catch(error => console.log(error));

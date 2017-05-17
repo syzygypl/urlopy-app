@@ -107,9 +107,9 @@ const findGroupLeader = (data) => {
             groups = Object.assign({}, groups, {
               [groupName]: {
                 name: groupName,
-                leaderDN: entryObj.dn,
+                leaderID: entryObj.uid.replace('.', '_'),
                 leaderCN: entryObj.cn,
-                leaderID: entryObj.uid,
+                leaderUID: entryObj.uid,
               },
             });
           }

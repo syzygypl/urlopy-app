@@ -11,7 +11,7 @@ const { port } = require('./config');
 const usersRouter = require('./srcServer/users');
 const firebase = require('./srcServer/firebase');
 const loggingInRouter = require('./srcServer/logging-in');
-const populateFireWithUsers = require('./srcServer/users/populateFireWithUsers');
+const populateFirebase = require('./srcServer/users/populateFirebase');
 
 const app = express();
 
@@ -35,7 +35,8 @@ https
   .listen(port, () => {
     console.log('Up and running...');
 
-    populateFireWithUsers();
+    populateFirebase('users');
+    populateFirebase('groups');
   });
 
 function getRandomInt(min, max) {
