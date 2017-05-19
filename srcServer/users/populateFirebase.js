@@ -9,5 +9,7 @@ module.exports = field =>
     .then(response =>
       db
         .ref()
-        .update({ [field]: response.data }))
+        .update({ [field]: response.data })
+        .then(() => response),
+    )
     .catch(error => console.log(error));

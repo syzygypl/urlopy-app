@@ -12,6 +12,7 @@ const usersRouter = require('./srcServer/users');
 const firebase = require('./srcServer/firebase');
 const loggingInRouter = require('./srcServer/logging-in');
 const populateFirebase = require('./srcServer/users/populateFirebase');
+const populateFirebaseWithGroupsMembers = require('./srcServer/users/populateFirebaseWithGroupsMembers');
 
 const app = express();
 
@@ -36,7 +37,8 @@ https
     console.log('Up and running...');
 
     populateFirebase('users');
-    populateFirebase('groups');
+
+    populateFirebase('groups').then(populateFirebaseWithGroupsMembers);
   });
 
 function getRandomInt(min, max) {
