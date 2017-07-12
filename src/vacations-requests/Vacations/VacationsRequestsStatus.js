@@ -22,7 +22,7 @@ const VacationsRequestsStatus = ({
       label="odrzuć"
       onClick={() => doAfterPrompt(vacationsRequest, 'rejected', userID, vacationsRequestID)}
       backgroundColor={lightBlue200}
-      icon={<ClearIcon />}
+      icon={<ClearIcon style={{ marginLeft: 0 }} />}
     />
   );
 
@@ -30,7 +30,7 @@ const VacationsRequestsStatus = ({
     <RaisedButton
       label="akceptuj"
       onClick={() => doAfterPrompt(vacationsRequest, 'accepted', userID, vacationsRequestID)}
-      icon={<DoneIcon />}
+      icon={<DoneIcon style={{ marginLeft: 0 }} />}
     />
   );
 

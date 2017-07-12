@@ -9,7 +9,7 @@ import Vacation from './Vacation';
 import * as props from '../props';
 
 const Vacations = ({ vacations }) => (
-  <Grid fluid>
+  <Grid fluid style={{ margin: 20 }}>
 
     <Row>
       <Col xs={12} md={12}>

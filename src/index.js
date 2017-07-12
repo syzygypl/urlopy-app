@@ -28,11 +28,14 @@ ReactDOM.render(
           <Menu />
 
           <div className="page-content">
-            <Route exact path="/" component={() => (<div>home</div>)} />
+            <Route
+              exact path="/"
+              component={() => <div style={{ textAlign: 'center' }}>HOME</div>}
+            />
 
             <Route path="/login" component={LogInPage} />
 
-            <Route exact path="/vacationsRequests/" component={() => (<VacationsRequests />)} />
+            <Route exact path="/vacationsRequests/" component={VacationsRequests} />
             <Route path="/vacationsRequests/:userID/:vacationsRequestID" component={VacationsRequestDetails} />
             <Route path="/vacations/submit" component={SubmitVacation} />
           </div>
