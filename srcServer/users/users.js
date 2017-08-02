@@ -16,7 +16,7 @@ const entryToFireFormat = entry => ({
   },
 });
 
-const collectUsers = (err, ldapRes) => new Promise((resolve) => {
+const collectUsers = (_, ldapRes) => new Promise((resolve) => {
   let users = {};
 
   ldapRes
@@ -31,4 +31,4 @@ const findUsersOpts = {
   scope: 'sub',
 };
 
-module.exports = { collectUsers, findUsersOpts };
+module.exports = { collectUsers, findUsersOpts, getGroup, entryToFireFormat };

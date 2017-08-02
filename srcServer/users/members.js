@@ -1,21 +1,11 @@
 const R = require('ramda');
 
-const dnToCapitalizedFullName = require('./dnToCapitalizedFullName');
-
 const findGroupsMembersOpts = {
   filter: '(cn=*\ Members)',
   scope: 'sub',
 };
 
-const getCNs = allGroups => R.mapObjIndexed(
-  namesInGroup =>
-    namesInGroup
-      .filter(R.identity)
-      .map(dnToCapitalizedFullName)
-      .map(fullName => `(cn=${fullName})`)
-      .join(''),
-  allGroups,
-);
+const getCNs = require('./getCNs');
 
 const addGroupsMembersData = (ldap, allGroups) => {
   let groups = R.mapObjIndexed(() => ({}), allGroups);
@@ -27,7 +17,7 @@ const addGroupsMembersData = (ldap, allGroups) => {
         scope: 'sub',
         filter: `(|${val})`,
       },
-      (erre, ldapRes) => {
+      (_, ldapRes) => {
         ldapRes
           .on('error', reject)
           .on('searchEntry', (entry) => {

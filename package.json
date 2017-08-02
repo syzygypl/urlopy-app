@@ -12,8 +12,10 @@
     "firebase-admin": "^4.1.4",
     "intl": "^1.2.5",
     "intl-locales-supported": "^1.0.0",
+    "jest": "^20.0.4",
     "ldapjs": "^1.0.1",
     "material-ui": "0.17.1",
+    "moxios": "^0.4.0",
     "njwt": "^0.4.0",
     "ramda": "^0.23.0",
     "react": "^15.4.2",
@@ -48,7 +50,7 @@
     "postcss-cli": "^3.0.0-beta",
     "postcss-scss": "^0.4.1",
     "precss": "^1.4.0",
-    "react-scripts": "0.9.4",
+    "react-scripts": "1.0.10",
     "stylelint": "^7.9.0",
     "stylelint-config-standard": "^16.0.0"
   },
@@ -62,7 +64,7 @@
     "start:server": "node --harmony_trailing_commas index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts eject",
     "postinstall": "(cd node_modules/react-flexbox-grid && yarn && yarn run build)"
   }

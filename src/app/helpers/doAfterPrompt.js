@@ -1,7 +1,7 @@
 export default (callback, ...args) => {
   const prompt = 'Czy podjąć decyzję?';
 
-  if (confirm(prompt)) {
+  if (window.confirm(prompt)) {
     callback(...args);
   }
 };

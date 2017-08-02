@@ -9,6 +9,7 @@
     "no-underscore-dangle": 1,
     "no-use-before-define": 1,
     "no-useless-escape": 1,
+    "no-restricted-globals": 2,
     "react/jsx-filename-extension": [
       1,
       {
