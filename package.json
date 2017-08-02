@@ -64,8 +64,13 @@
     "start:server": "node --harmony_trailing_commas index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest --coverage",
     "eject": "react-scripts eject",
     "postinstall": "(cd node_modules/react-flexbox-grid && yarn && yarn run build)"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "srcServer/**/*.js"
+    ]
   }
 }
