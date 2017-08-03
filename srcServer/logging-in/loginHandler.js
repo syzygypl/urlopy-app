@@ -4,7 +4,7 @@ const getEntryDataFromLDAP = require('./getEntryDataFromLDAP');
 
 const noAuth = (res, e) => res.status(401).send(e);
 
-export default (ldap, req, res) => {
+module.exports = (ldap, req, res) => {
   const ldapClient = ldap.createClient({
     url: process.env.LDAP_URL,
   });
