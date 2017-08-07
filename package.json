@@ -17,11 +17,12 @@
     "material-ui": "0.17.1",
     "moxios": "^0.4.0",
     "njwt": "^0.4.0",
+    "node-cron": "^1.2.0",
     "ramda": "^0.23.0",
     "react": "^15.4.2",
     "react-collapse": "^2.3.3",
     "react-dom": "^15.4.2",
-    "react-flexbox-grid": "https://github.com/roylee0704/react-flexbox-grid.git",
+    "react-flexbox-grid": "^1.1.3",
     "react-height": "^2.2.0",
     "react-motion": "^0.4.7",
     "react-redux": "^5.0.3",
@@ -62,11 +63,11 @@
     "build:css:watch": "yarn run build:css -- -w",
     "start:server:watch": "nodemon --harmony_trailing_commas index.js",
     "start:server": "node --harmony_trailing_commas index.js",
-    "start": "react-scripts start",
+    "start": "npm run build:css:watch & npm run start:server:watch & react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage",
     "eject": "react-scripts eject",
-    "postinstall": "(cd node_modules/react-flexbox-grid && yarn && yarn run build)"
+    "postinstall": "(cd ./node_modules/react-flexbox-grid && yarn && yarn run build)"
   },
   "jest": {
     "collectCoverageFrom": [

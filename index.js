@@ -6,6 +6,7 @@ const cors = require('cors');
 const https = require('https');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
 
 const { port } = require('./config');
 const usersRouter = require('./srcServer/users');
@@ -13,6 +14,11 @@ const firebase = require('./srcServer/firebase');
 const loggingInRouter = require('./srcServer/logging-in');
 const populateFirebase = require('./srcServer/users/populateFirebase');
 const populateFirebaseWithGroupsMembers = require('./srcServer/users/populateFirebaseWithGroupsMembers');
+
+const populateData = () => {
+  populateFirebase('users');
+  populateFirebase('groups').then(populateFirebaseWithGroupsMembers);
+};
 
 const app = express();
 
@@ -35,10 +41,7 @@ https
   })
   .listen(port, () => {
     console.log('Up and running...');
-
-    populateFirebase('users');
-
-    populateFirebase('groups').then(populateFirebaseWithGroupsMembers);
+    populateData();
   });
 
 function getRandomInt(min, max) {
@@ -153,3 +156,5 @@ app.post('/vacations/', (req, res) => {
 app.get('/vacations/work_days', (req, res) => {
   res.send(String(getRandomInt(1, 20)));
 });
+
+cron.schedule('0 4 * * *', populateData);

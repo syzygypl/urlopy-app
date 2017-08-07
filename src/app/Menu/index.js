@@ -13,19 +13,18 @@ import ActionPowerSettingsNew from 'material-ui/svg-icons/action/power-settings-
 import './style.css';
 
 const Menu = () => (
-
-<div className="menu-list">
+  <div className="menu-list">
     <List>
-        <Link className="menu-link" to="/"><ListItem primaryText="Strona główna" leftIcon={<ActionHome />} /></Link>
-        <Link className="menu-link" to="/vacations/submit"><ListItem primaryText="Nowy urlop" leftIcon={<ContentSend />} /></Link>
-        <Link className="menu-link" to="/vacationsRequests"><ListItem primaryText="Aktualności" leftIcon={<ContentInbox />} /></Link>
-        <Link className="menu-link" to="/login"><ListItem primaryText="Login" leftIcon={<ActionPowerSettingsNew />} /></Link>
+      <Link className="menu-link" to="/"><ListItem primaryText="Strona główna" leftIcon={<ActionHome />} /></Link>
+      <Link className="menu-link" to="/vacations/submit"><ListItem primaryText="Nowy urlop" leftIcon={<ContentSend />} /></Link>
+      <Link className="menu-link" to="/vacationsRequests"><ListItem primaryText="Aktualności" leftIcon={<ContentInbox />} /></Link>
+      <Link className="menu-link" to="/login"><ListItem primaryText="Login" leftIcon={<ActionPowerSettingsNew />} /></Link>
     </List>
     <Divider />
     <List>
-        <ListItem primaryText="Inne" rightIcon={<ActionInfo />} />
+      <ListItem primaryText="Inne" rightIcon={<ActionInfo />} />
     </List>
-</div>
+  </div>
 );
 
 export default Menu;

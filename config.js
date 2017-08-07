@@ -1,14 +1,16 @@
-const { zip } = require('./common');
+// proxy comes from package.json as it is needed there for create-react-app proxying
+// https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development
+
 const { proxy } = require('./package.json');
 const devPort = require('./srcServer/getPort')(proxy);
 
-const config = (
-  process.env.URLOPY_APP_ENV === 'dev'
-    ? [devPort, proxy]
-    : [80, proxy]
-);
+const config = {
+  port: 80,
+  proxyAddress: proxy,
+};
 
-const configKeysToSet = ['port', 'proxyAddress'];
-const zippedConfig = zip(configKeysToSet, config);
+const devConfigOverrides = {
+  port: devPort,
+};
 
-module.exports = zippedConfig;
+module.exports = process.env.URLOPY_APP_ENV === 'dev' ? Object.assign({}, config, devConfigOverrides) : config;
