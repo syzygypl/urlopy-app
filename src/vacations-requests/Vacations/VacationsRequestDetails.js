@@ -3,6 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { firebaseConnect, dataToJS } from 'react-redux-firebase';
+import axios from 'axios';
 
 import Comments from '../Comments/Comments';
 import Vacations from './Vacations';
@@ -56,10 +57,19 @@ export default compose(
     ({ firebase }, ownProps) => {
       const forVacationsRequest = (userID, vrID) => `/vacationsRequests/${userID}/${vrID}`;
 
+      const sendNotification = (status, userID, vrID) => axios.post(
+        `${process.env.REACT_APP_INTERNAL_API_URL}/mail/statusNotify`,
+        {
+          status,
+          userID,
+          vrID,
+        },
+      );
+
       const decide = (vacationsRequest, status, userID, vrID) => {
         const link = forVacationsRequest(userID, vrID);
-
-        return ownProps.firebase.set(link, Object.assign({}, vacationsRequest, { status }));
+        return ownProps.firebase.set(link, Object.assign({}, vacationsRequest, { status }))
+          .then(() => sendNotification(status, userID, vrID));
       };
 
       const decideAfterPrompt = doAfterPrompt.bind(null, decide);

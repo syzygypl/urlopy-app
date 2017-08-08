@@ -14,6 +14,7 @@ const firebase = require('./srcServer/firebase');
 const loggingInRouter = require('./srcServer/logging-in');
 const populateFirebase = require('./srcServer/users/populateFirebase');
 const populateFirebaseWithGroupsMembers = require('./srcServer/users/populateFirebaseWithGroupsMembers');
+const { sendVacationRequestNotification, sendStatusNotification } = require('./srcServer/mail/MailSender');
 
 const populateData = () => {
   populateFirebase('users');
@@ -133,13 +134,22 @@ app.post('/vacations/', (req, res) => {
     updates[`/vacationsRequests/${String(requestForUser)}/${newVacationRequestKey}`] = vacationRequestBasicData;
     updates[`/vacations/${newVacationRequestKey}/`] = vacationRequestDays;
 
-    // we can now save the data to the firebase
-    db.ref().update(updates).then(() => {
-      // success!
-      res.send({
-        status: 'OK',
+    // we can now save the data to the firebase and notify users
+    db.ref().update(updates)
+      .then(() =>
+        sendVacationRequestNotification(
+          values[0].val(),
+          values[1].val(),
+          vacationDays,
+          notes,
+        ),
+      )
+      .then(() => {
+        // success!
+        res.send({
+          status: 'OK',
+        });
       });
-    });
   }).catch(() => {
     // we got some error while adding new vacation request
     // @TODO: send to Sentry, along with some details (e.g. err, plus maybe request data)
@@ -155,6 +165,36 @@ app.post('/vacations/', (req, res) => {
 // to be subtracted from vacation pool
 app.get('/vacations/work_days', (req, res) => {
   res.send(String(getRandomInt(1, 20)));
+});
+
+app.post('/mail/statusNotify', (req, res) => {
+  const db = firebase.database();
+
+  const { userID, vrID, status } = req.body;
+
+  const notifyUserPromise = db.ref(`/users/${userID}`).once('value');
+  const requestForVacationData = db.ref(`/vacationsRequests/${userID}/${vrID}`).once('value');
+  const requestForVacationDates = db.ref(`/vacations/${vrID}`).once('value');
+
+  Promise.all([notifyUserPromise, requestForVacationData, requestForVacationDates])
+  .then((values) => {
+    const [userRef, vacationRef, daysRef] = values;
+    const user = userRef.val();
+    const vacation = vacationRef.val();
+    const days = daysRef.val();
+
+    return sendStatusNotification(user, status, Object.values(days), vacation.notes);
+  }).then(() => {
+    res.send({
+      status: 'OK',
+    });
+  }).catch(() => {
+    // we got some error while sending notification
+    // @TODO: send to Sentry, along with some details (e.g. err, plus maybe request data)
+    res.send(createErrorResponse(
+      'Wystąpił problem z wysyłką maila (kod błędu: E-05).',
+    ));
+  });
 });
 
 cron.schedule('0 4 * * *', populateData);

@@ -22,4 +22,5 @@ module.exports = (
     .get('/users', searchInLDAP.bind(null, findUsersOpts, collectUsers, 'o=ArsThanea,dc=arsthanea,dc=com'))
     .get('/groups', searchInLDAP.bind(null, findGroupsOpts, collectGroupsAndLeaders.bind(null, ldap), 'dc=arsthanea,dc=com'))
     .get('/groups-members', searchInLDAP.bind(null, findGroupsMembersOpts, collectGroupsMembers.bind(null, ldap), 'dc=arsthanea,dc=com'))
+    .post('/vacations/')
 );

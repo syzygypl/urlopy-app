@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { firebase as withFirebase } from 'react-redux-firebase';
 
 // import MobileTearSheet from 'material-ui/MobileTearSheet'
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ContentSend from 'material-ui/svg-icons/content/send';
@@ -12,19 +13,25 @@ import ActionPowerSettingsNew from 'material-ui/svg-icons/action/power-settings-
 
 import './style.css';
 
-const Menu = () => (
+const Menu = ({ firebase }) => (
   <div className="menu-list">
     <List>
       <Link className="menu-link" to="/"><ListItem primaryText="Strona główna" leftIcon={<ActionHome />} /></Link>
       <Link className="menu-link" to="/vacations/submit"><ListItem primaryText="Nowy urlop" leftIcon={<ContentSend />} /></Link>
       <Link className="menu-link" to="/vacationsRequests"><ListItem primaryText="Aktualności" leftIcon={<ContentInbox />} /></Link>
-      <Link className="menu-link" to="/login"><ListItem primaryText="Login" leftIcon={<ActionPowerSettingsNew />} /></Link>
     </List>
     <Divider />
     <List>
       <ListItem primaryText="Inne" rightIcon={<ActionInfo />} />
     </List>
+    <List className="menu-link -logout">
+      <ListItem onClick={firebase.logout} primaryText="Wyloguj" leftIcon={<ActionPowerSettingsNew />} />
+    </List>
   </div>
 );
 
-export default Menu;
+Menu.propTypes = {
+  firebase: React.PropTypes.shape({}).isRequired,
+};
+
+export default withFirebase()(Menu);

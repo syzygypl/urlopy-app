@@ -2,8 +2,14 @@
   width: 256px;
   border-right: 1px solid #ccc;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .menu-link {
   text-decoration: none;
+
+  &.-logout {
+    margin-top: auto;
+  }
 }
