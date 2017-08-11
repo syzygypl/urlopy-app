@@ -1,7 +1,7 @@
 const postmark = require('postmark');
 const { PostmarkError } = require('../errorsHandler');
 
-const client = new postmark.Client(process.env.POSTMARK_API_KEY + 'a');
+const client = new postmark.Client(process.env.POSTMARK_API_KEY);
 
 const prepareVacationDataString = (dates, notes) => `
 ${dates.map(date => `${date.from} - ${date.to} (dni roboczych: ${date.workDays})\r\n`).join('')}\r\n
