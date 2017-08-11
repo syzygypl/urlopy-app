@@ -15,6 +15,7 @@ const loggingInRouter = require('./srcServer/logging-in');
 const populateFirebase = require('./srcServer/users/populateFirebase');
 const populateFirebaseWithGroupsMembers = require('./srcServer/users/populateFirebaseWithGroupsMembers');
 const { sendVacationRequestNotification, sendStatusNotification } = require('./srcServer/mail/MailSender');
+const { DatabaseError } = require('./srcServer/errorsHandler');
 
 const populateData = () => {
   populateFirebase('users');
@@ -108,8 +109,7 @@ app.post('/vacations/', (req, res) => {
     const objectsExist = values.reduce((isValid, current) => !!current.val(), true);
 
     if (!objectsExist) {
-      res.send(createErrorResponse('Wybrani użytkownicy nie istnieją w bazie (kod błędy: E-03).'));
-      return;
+      throw new Error({ appSpecificErrorCode: 3, message: 'Wybrani użytkownicy nie istnieją w bazie' });
     }
 
     // generate new unique key for vacation request
@@ -135,28 +135,21 @@ app.post('/vacations/', (req, res) => {
     updates[`/vacations/${newVacationRequestKey}/`] = vacationRequestDays;
 
     // we can now save the data to the firebase and notify users
-    db.ref().update(updates)
+    return db.ref().update(updates)
       .then(() =>
-        sendVacationRequestNotification(
-          values[0].val(),
-          values[1].val(),
-          vacationDays,
-          notes,
-        ),
+        sendVacationRequestNotification(values[0].val(), values[1].val(), vacationDays, notes),
       )
-      .then(() => {
-        // success!
-        res.send({
-          status: 'OK',
-        });
+      .then(() => res.send({ status: 'OK' }))
+      .catch((err) => {
+        throw new DatabaseError('Błąd zapisu bazy danych', 6, err);
       });
-  }).catch(() => {
+  }).catch((err) => {
     // we got some error while adding new vacation request
     // @TODO: send to Sentry, along with some details (e.g. err, plus maybe request data)
-    res.send(createErrorResponse(
-      `Wystąpił problem z bazą danych. Spróbuj ponownie za chwilę a jeśli problem nie znika,
-      skontaktuj się z działem IT (kod błędu: E-04).`,
-    ));
+    throw new DatabaseError(`Wystąpił problem z bazą danych. Spróbuj ponownie za chwilę a jeśli problem nie znika,
+      skontaktuj się z działem IT (kod błędu: E-04).`, 4, err);
+  }).catch((err) => {
+    res.send(createErrorResponse(`${err.message} (kod błędu: E-${err.code})`));
   });
 });
 
